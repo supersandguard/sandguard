@@ -1,13 +1,17 @@
 # SandGuard — Status
 
-## v0.3.0 (2026-02-01)
+## v0.3.0 (2026-02-01) - Marketing Launch
 
 ### What's Live
 - **Frontend:** https://sandguard.netlify.app ✅
-- **Domain:** supersandguard.com (DNS propagating)
-- **Backend:** Running on Pi, port 3001 (Tailscale accessible)
+- **Domain:** supersandguard.com ✅
+- **Backend:** Running on Pi, port 3001 (Tailscale accessible) ✅
 - **Language:** All English ✅
 - **PWA:** Installable, offline-capable ✅
+- **Daimo Pay Integration:** Accept any crypto (ETH, USDC, Base ETH) ✅
+- **GitHub Actions CI/CD:** Auto-deploy from git pushes ✅
+- **Moltbook Marketing:** Active on social network for AI agents ✅
+- **Clawdbot Skill:** Ready for distribution to other Clawdbots ✅
 
 ### Architecture
 ```
@@ -33,21 +37,28 @@ User Browser → sandguard.netlify.app (static frontend)
 - [x] Dark theme, mobile-first
 - [x] Auto-refresh every 30s
 
-### Payment System
-- Wallet: `0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84`
-- Chain: Base (ETH)
-- Price: $20/month
-- Flow: Send ETH → POST /api/payments/verify → Get API key
+### Payment System (Daimo Pay Integration)
+- **Price:** $20/month
+- **Supported Chains:** Ethereum mainnet, Base, Optimism, Arbitrum
+- **Supported Tokens:** ETH, USDC, DAI (any amount equivalent to $20)
+- **Flow:** User inputs their Safe address → Send crypto → POST /api/payments/verify → Get API key
+- **No Default Address:** Users must provide their own Safe address (security best practice)
 
-### Pending
-- [ ] DNS propagation (72→75 fix)
-- [ ] GitHub repo + Netlify CI/CD
+### Completed Today ✅
+- [x] DNS propagation resolved
+- [x] GitHub repo + Netlify CI/CD setup
+- [x] Daimo Pay integration (accept any crypto)
+- [x] Moltbook marketing campaign launched
+- [x] Clawdbot Skill created for distribution
+- [x] Removed default Safe address (users input their own)
+
+### Still Pending
 - [ ] Auth persistence (JWT/sessions)
 - [ ] SQLite for subscriptions (currently in-memory)
 - [ ] Push notifications (webhooks to Clawdbot)
 - [ ] Multi-Safe support per account
 - [ ] Historical transaction log
-- [ ] USDC payment option
+- [ ] Skill marketplace submission
 
 ### Tech Stack
 - Frontend: React + TypeScript + Vite + Tailwind CSS
