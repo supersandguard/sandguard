@@ -21,7 +21,7 @@ interface SafeConfig {
 
 // Default: Alberto's Safe on Ethereum mainnet
 const DEFAULT_CONFIG: SafeConfig = {
-  address: '0x32B8057a9213C1060Bad443E43F33FaB9A7e9EC7',
+  address: '',
   chainId: 1,
 }
 

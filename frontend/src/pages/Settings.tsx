@@ -12,7 +12,7 @@ interface Config {
 }
 
 const DEFAULT_CONFIG: Config = {
-  address: '0x32B8057a9213C1060Bad443E43F33FaB9A7e9EC7',
+  address: '',
   chainId: 1,
   blockUnlimited: true,
   largeThreshold: '10000',

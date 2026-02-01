@@ -14,7 +14,7 @@ const getApiBase = () => {
 }
 const API_BASE = getApiBase()
 
-const DEFAULT_SAFE_ADDRESS = '0x32B8057a9213C1060Bad443E43F33FaB9A7e9EC7'
+const DEFAULT_SAFE_ADDRESS = ''
 const DEFAULT_CHAIN_ID = 1
 
 const POLL_INTERVAL = 30_000 // 30 seconds
