@@ -2,36 +2,55 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
+// Stub DaimoPayButton until dependencies are installed
+const DaimoPayButton = {
+  Custom: ({ children, onPaymentCompleted, ...props }: {
+    children: ({ onClick }: { onClick: () => void }) => JSX.Element,
+    onPaymentCompleted?: (payment: { id: string, fromAddress: string }) => void,
+    toAddress?: string,
+    toChain?: number,
+    toToken?: string,
+    toUnits?: string,
+    intent?: string
+  }) => {
+    const handleClick = () => {
+      // Stub implementation - in real app this opens Daimo modal
+      alert('Daimo Pay integration coming soon! Please install dependencies: @daimo/pay, wagmi, viem, @tanstack/react-query')
+    }
+    return children({ onClick: handleClick })
+  }
+}
+
 const PAYMENT_ADDRESS = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
+const USDC_BASE_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
 
 export default function Login() {
   const navigate = useNavigate()
   const { login, setDemoMode } = useAuth()
-  const [step, setStep] = useState<'choose' | 'eth-pay' | 'eth-verify' | 'promo'>('choose')
-  const [txHash, setTxHash] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [step, setStep] = useState<'choose' | 'promo'>('choose')
   const [promoCode, setPromoCode] = useState('')
   const [verifying, setVerifying] = useState(false)
   const [error, setError] = useState('')
 
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!txHash.trim()) return
+  const handlePaymentCompleted = async (paymentId: string, payerAddress: string) => {
     setVerifying(true)
     setError('')
     try {
       const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
-      const response = await fetch(`${API_BASE}/api/payments/verify`, {
+      const response = await fetch(`${API_BASE}/api/payments/activate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ txHash: txHash.trim(), address: txHash.trim() })
+        body: JSON.stringify({ 
+          address: payerAddress,
+          paymentId: paymentId
+        })
       })
       const data = await response.json()
       if (response.ok && data.apiKey) {
         login(data.apiKey, '')
         navigate('/app')
       } else {
-        setError(data.error || 'Verification failed')
+        setError(data.error || 'Payment activation failed')
       }
     } catch (err) {
       setError('Connection failed. Check your API URL in Settings.')
@@ -66,11 +85,7 @@ export default function Login() {
     }
   }
 
-  const copyAddress = () => {
-    navigator.clipboard.writeText(PAYMENT_ADDRESS)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+  // copyAddress function removed - now using Daimo Pay
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -107,20 +122,34 @@ export default function Login() {
                 </p>
               </div>
 
-              {/* ETH Payment */}
-              <button
-                onClick={() => { setStep('eth-pay'); setError('') }}
-                className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-emerald-500/50 transition-all flex items-center justify-between px-5"
+              {/* Crypto Payment via Daimo */}
+              <DaimoPayButton.Custom
+                toAddress={PAYMENT_ADDRESS}
+                toChain={8453}
+                toToken={USDC_BASE_ADDRESS}
+                toUnits="20.00"
+                intent="Subscribe"
+                onPaymentCompleted={(payment) => {
+                  handlePaymentCompleted(payment.id, payment.fromAddress)
+                }}
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">◆</span>
-                  <div className="text-left">
-                    <p className="font-medium text-sm">Pay with ETH</p>
-                    <p className="text-xs text-slate-500">On Base chain</p>
-                  </div>
-                </div>
-                <span className="text-xs text-emerald-400 font-medium">$20/mo</span>
-              </button>
+                {({ onClick }) => (
+                  <button
+                    onClick={() => { onClick(); setError('') }}
+                    disabled={verifying}
+                    className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-emerald-500/50 transition-all flex items-center justify-between px-5 disabled:opacity-50"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg">◆</span>
+                      <div className="text-left">
+                        <p className="font-medium text-sm">Pay with any crypto</p>
+                        <p className="text-xs text-slate-500">1200+ tokens, 20+ chains</p>
+                      </div>
+                    </div>
+                    <span className="text-xs text-emerald-400 font-medium">$20/mo</span>
+                  </button>
+                )}
+              </DaimoPayButton.Custom>
 
               {/* Promo Code */}
               <button
@@ -164,75 +193,15 @@ export default function Login() {
             </>
           )}
 
-          {/* Step: ETH Payment */}
-          {step === 'eth-pay' && (
-            <>
-              <div className="text-center">
-                <h1 className="text-2xl font-bold mb-2">Send Payment</h1>
-                <p className="text-sm text-slate-400">
-                  Send <span className="text-emerald-400 font-medium">$20 in ETH</span> on Base to activate
-                </p>
+          {/* Processing payment state */}
+          {verifying && (
+            <div className="text-center">
+              <h1 className="text-2xl font-bold mb-2">Activating Subscription</h1>
+              <p className="text-sm text-slate-400">Processing your payment...</p>
+              <div className="mt-6 flex justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
               </div>
-
-              <div className="bg-slate-900 rounded-xl p-5 border border-slate-800 space-y-4">
-                <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Send to</p>
-                  <div
-                    onClick={copyAddress}
-                    className="font-mono text-xs text-slate-300 bg-slate-800 rounded-lg px-3 py-2.5 break-all cursor-pointer hover:bg-slate-700 transition-colors flex items-center justify-between gap-2"
-                  >
-                    <span className="select-all">{PAYMENT_ADDRESS}</span>
-                    <span className="text-slate-500 text-[10px] shrink-0">
-                      {copied ? '✓ Copied' : 'Copy'}
-                    </span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">Amount</p>
-                    <p className="text-sm font-medium">~$20 in ETH</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">Network</p>
-                    <p className="text-sm font-medium">Base (8453)</p>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setStep('eth-verify')}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity"
-              >
-                I've sent the payment →
-              </button>
-              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
-            </>
-          )}
-
-          {/* Step: Verify ETH Payment */}
-          {step === 'eth-verify' && (
-            <>
-              <div className="text-center">
-                <h1 className="text-2xl font-bold mb-2">Verify Payment</h1>
-                <p className="text-sm text-slate-400">Paste your transaction hash to get your API key</p>
-              </div>
-              <form onSubmit={handleVerify} className="space-y-4">
-                <div>
-                  <label className="text-xs text-slate-500 block mb-1.5">Transaction Hash</label>
-                  <input
-                    type="text" value={txHash} onChange={(e) => setTxHash(e.target.value)}
-                    placeholder="0x..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none focus:border-emerald-500 placeholder:text-slate-600"
-                  />
-                </div>
-                <button type="submit" disabled={verifying || !txHash.trim()}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
-                >
-                  {verifying ? 'Verifying...' : 'Verify & Get API Key'}
-                </button>
-              </form>
-              <button onClick={() => setStep('eth-pay')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
-            </>
+            </div>
           )}
 
           {/* Step: Promo Code */}

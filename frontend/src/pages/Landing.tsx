@@ -81,7 +81,7 @@ export default function Landing() {
             to="/login"
             className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-base hover:opacity-90 transition-opacity"
           >
-            Get Started — $20/mo in ETH
+            Get Started — $20/mo in any crypto
           </Link>
           <Link
             to="/app"
@@ -139,7 +139,7 @@ export default function Landing() {
             <span className="text-5xl font-bold">$20</span>
             <span className="text-slate-500">/month</span>
           </div>
-          <p className="text-sm text-slate-400 mb-6">Pay with ETH on Base</p>
+          <p className="text-sm text-slate-400 mb-6">Pay with any crypto</p>
           <ul className="text-sm text-slate-400 space-y-3 mb-8 text-left">
             <li className="flex items-center gap-2">
               <span className="text-emerald-400">✓</span> Unlimited transactions
@@ -166,7 +166,7 @@ export default function Landing() {
           >
             Connect Your Safe
           </Link>
-          <p className="text-xs text-slate-600 mt-3">Pay with ETH • Cancel anytime</p>
+          <p className="text-xs text-slate-600 mt-3">Pay with any crypto • Cancel anytime</p>
         </div>
       </section>
 

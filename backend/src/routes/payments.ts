@@ -134,4 +134,50 @@ export function requireApiKey(req: Request, res: Response, next: Function) {
   next()
 }
 
+// POST /api/payments/activate - Activate subscription after Daimo payment
+router.post('/activate', async (req: Request, res: Response) => {
+  const { address, paymentId } = req.body
+  
+  if (!address || !paymentId) {
+    return res.status(400).json({ error: 'address and paymentId are required' })
+  }
+
+  try {
+    // Check if already activated via this payment ID
+    const existing = getSubscriptionByAddress(address)
+    if (existing && existing.paid_tx_hash === paymentId && existing.expires_at > Date.now()) {
+      return res.json({
+        status: 'active',
+        apiKey: existing.api_key,
+        expiresAt: new Date(existing.expires_at).toISOString(),
+        message: 'Subscription already active'
+      })
+    }
+
+    // For Daimo payments, we expect the webhook to have already activated the subscription
+    // This endpoint is just for the frontend to retrieve the API key after payment
+    const subscription = getSubscriptionByAddress(address)
+    
+    if (!subscription) {
+      return res.status(404).json({ error: 'No subscription found. Payment may still be processing.' })
+    }
+    
+    if (subscription.expires_at <= Date.now()) {
+      return res.status(403).json({ error: 'Subscription expired' })
+    }
+    
+    return res.json({
+      status: 'active',
+      apiKey: subscription.api_key,
+      expiresAt: new Date(subscription.expires_at).toISOString(),
+      plan: subscription.plan,
+      message: 'Subscription activated successfully'
+    })
+
+  } catch (err) {
+    console.error('Payment activation error:', err)
+    return res.status(500).json({ error: 'Failed to activate payment' })
+  }
+})
+
 export default router

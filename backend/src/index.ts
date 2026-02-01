@@ -11,6 +11,7 @@ import pollRouter from './routes/poll';
 import paymentsRouter from './routes/payments';
 import stripeRouter from './routes/stripe';
 import promoRouter from './routes/promo';
+import daimoWebhookRouter from './routes/daimo-webhook';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use('/api/poll', pollRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/stripe', stripeRouter);
 app.use('/api/promo', promoRouter);
+app.use('/api/webhooks', daimoWebhookRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => {
