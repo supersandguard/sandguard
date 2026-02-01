@@ -1,12 +1,27 @@
+'use client'
 import { ReactNode } from 'react'
+import { WagmiProvider } from 'wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { DaimoPayProvider, getDefaultConfig } from '@daimo/pay'
+
+const queryClient = new QueryClient()
+
+const config = getDefaultConfig({
+  appName: 'SandGuard',
+})
 
 interface DaimoProviderProps {
   children: ReactNode
 }
 
-// Stub implementation until Daimo dependencies are installed
 export function DaimoProvider({ children }: DaimoProviderProps) {
-  // TODO: Install @daimo/pay, wagmi, viem, @tanstack/react-query
-  // For now, just wrap children without providers
-  return <>{children}</>
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <DaimoPayProvider appId="pay-demo" mode="dark">
+          {children}
+        </DaimoPayProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  )
 }

@@ -1,28 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-
-// Stub DaimoPayButton until dependencies are installed
-const DaimoPayButton = {
-  Custom: ({ children, onPaymentCompleted, ...props }: {
-    children: ({ onClick }: { onClick: () => void }) => JSX.Element,
-    onPaymentCompleted?: (payment: { id: string, fromAddress: string }) => void,
-    toAddress?: string,
-    toChain?: number,
-    toToken?: string,
-    toUnits?: string,
-    intent?: string
-  }) => {
-    const handleClick = () => {
-      // Stub implementation - in real app this opens Daimo modal
-      alert('Daimo Pay integration coming soon! Please install dependencies: @daimo/pay, wagmi, viem, @tanstack/react-query')
-    }
-    return children({ onClick: handleClick })
-  }
-}
+import { DaimoPayButton } from '@daimo/pay'
 
 const PAYMENT_ADDRESS = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
-const USDC_BASE_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+const BASE_CHAIN_ID = 8453
 
 export default function Login() {
   const navigate = useNavigate()
@@ -32,10 +15,14 @@ export default function Login() {
   const [verifying, setVerifying] = useState(false)
   const [error, setError] = useState('')
 
-  const handlePaymentCompleted = async (paymentId: string, payerAddress: string) => {
+  const handlePaymentCompleted = async (event: any) => {
     setVerifying(true)
     setError('')
     try {
+      const payment = event.payment || event
+      const payerAddress = payment?.source?.payerAddress || 'unknown'
+      const paymentId = payment?.id || event?.paymentId || 'unknown'
+      
       const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
       const response = await fetch(`${API_BASE}/api/payments/activate`, {
         method: 'POST',
@@ -85,8 +72,6 @@ export default function Login() {
     }
   }
 
-  // copyAddress function removed - now using Daimo Pay
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
       {/* Header */}
@@ -113,7 +98,7 @@ export default function Login() {
           )}
 
           {/* Step: Choose */}
-          {step === 'choose' && (
+          {step === 'choose' && !verifying && (
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Get Started</h1>
@@ -122,22 +107,19 @@ export default function Login() {
                 </p>
               </div>
 
-              {/* Crypto Payment via Daimo */}
+              {/* Daimo Pay Button */}
               <DaimoPayButton.Custom
-                toAddress={PAYMENT_ADDRESS}
-                toChain={8453}
-                toToken={USDC_BASE_ADDRESS}
+                toAddress={PAYMENT_ADDRESS as `0x${string}`}
+                toChain={BASE_CHAIN_ID}
+                toToken={USDC_BASE as `0x${string}`}
                 toUnits="20.00"
                 intent="Subscribe"
-                onPaymentCompleted={(payment) => {
-                  handlePaymentCompleted(payment.id, payment.fromAddress)
-                }}
+                onPaymentCompleted={handlePaymentCompleted}
               >
-                {({ onClick }) => (
+                {({ show }) => (
                   <button
-                    onClick={() => { onClick(); setError('') }}
-                    disabled={verifying}
-                    className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-emerald-500/50 transition-all flex items-center justify-between px-5 disabled:opacity-50"
+                    onClick={() => { show(); setError('') }}
+                    className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-emerald-500/50 transition-all flex items-center justify-between px-5"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-lg">◆</span>
@@ -193,7 +175,7 @@ export default function Login() {
             </>
           )}
 
-          {/* Processing payment state */}
+          {/* Processing payment */}
           {verifying && (
             <div className="text-center">
               <h1 className="text-2xl font-bold mb-2">Activating Subscription</h1>
