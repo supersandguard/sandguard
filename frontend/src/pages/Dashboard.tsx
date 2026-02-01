@@ -16,7 +16,7 @@ function shortenAddress(addr: string) {
 
 function formatTime(date: Date | null) {
   if (!date) return ''
-  return date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 }
 
 export default function Dashboard() {
@@ -54,7 +54,7 @@ export default function Dashboard() {
               ) : !isDemo ? (
                 <>
                   <span className="text-xs bg-slate-700 text-slate-400 px-2 py-0.5 rounded-full animate-pulse">
-                    Cargando...
+                    Loading...
                   </span>
                 </>
               ) : (
@@ -69,15 +69,15 @@ export default function Dashboard() {
             onClick={refresh}
             disabled={loading || refreshing}
             className="text-slate-500 hover:text-emerald-400 transition-colors disabled:opacity-40 p-1"
-            title="Actualizar"
+            title="Refresh"
           >
             <span className={`text-lg ${refreshing ? 'animate-spin inline-block' : ''}`}>↻</span>
           </button>
         </div>
         {lastUpdated && (
           <p className="text-xs text-slate-600 mt-3">
-            Actualizado: {formatTime(lastUpdated)}
-            {refreshing && <span className="text-emerald-400 ml-2 animate-pulse">actualizando...</span>}
+            Updated: {formatTime(lastUpdated)}
+            {refreshing && <span className="text-emerald-400 ml-2 animate-pulse">refreshing...</span>}
           </p>
         )}
       </div>
@@ -86,15 +86,15 @@ export default function Dashboard() {
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 text-center">
           <p className="text-2xl font-bold text-emerald-400">{pending.filter(t => t.risk?.score === 'green').length}</p>
-          <p className="text-xs text-slate-500 mt-1">🟢 Seguro</p>
+          <p className="text-xs text-slate-500 mt-1">🟢 Safe</p>
         </div>
         <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 text-center">
           <p className="text-2xl font-bold text-amber-400">{pending.filter(t => t.risk?.score === 'yellow').length}</p>
-          <p className="text-xs text-slate-500 mt-1">🟡 Cuidado</p>
+          <p className="text-xs text-slate-500 mt-1">🟡 Caution</p>
         </div>
         <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 text-center">
           <p className="text-2xl font-bold text-red-400">{pending.filter(t => t.risk?.score === 'red').length}</p>
-          <p className="text-xs text-slate-500 mt-1">🔴 Peligro</p>
+          <p className="text-xs text-slate-500 mt-1">🔴 Danger</p>
         </div>
       </div>
 
@@ -109,23 +109,23 @@ export default function Dashboard() {
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
-            Pendientes {loading && <span className="text-emerald-400 animate-pulse">⟳</span>}
+            Pending {loading && <span className="text-emerald-400 animate-pulse">⟳</span>}
           </h2>
-          <Link to="/app/queue" className="text-xs text-emerald-400 hover:underline">Ver todas →</Link>
+          <Link to="/app/queue" className="text-xs text-emerald-400 hover:underline">View all →</Link>
         </div>
         {loading && pending.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-2xl animate-pulse">⟳</p>
-            <p className="text-sm text-slate-500 mt-2">Cargando transacciones...</p>
+            <p className="text-sm text-slate-500 mt-2">Loading transactions...</p>
           </div>
         ) : pending.length === 0 ? (
           <div className="bg-slate-900/50 rounded-2xl border border-slate-800/50 py-12 px-6 text-center">
             <p className="text-4xl mb-3">🛡️</p>
-            <p className="text-sm font-medium text-slate-300 mb-1">No hay transacciones pendientes</p>
-            <p className="text-xs text-slate-500">Tu Safe está seguro</p>
+            <p className="text-sm font-medium text-slate-300 mb-1">No pending transactions</p>
+            <p className="text-xs text-slate-500">Your Safe is secure</p>
             {lastUpdated && (
               <p className="text-xs text-slate-600 mt-3">
-                Última revisión: {formatTime(lastUpdated)}
+                Last checked: {formatTime(lastUpdated)}
               </p>
             )}
           </div>
@@ -143,7 +143,7 @@ export default function Dashboard() {
                       {tx.explanation?.summary || tx.decoded?.functionName || 'Unknown'}
                     </p>
                     <p className="text-xs text-slate-500 mt-1">
-                      Nonce #{tx.nonce} · {tx.confirmations}/{tx.confirmationsRequired} firmas
+                      Nonce #{tx.nonce} · {tx.confirmations}/{tx.confirmationsRequired} signatures
                     </p>
                   </div>
                   <span className="text-lg ml-2">

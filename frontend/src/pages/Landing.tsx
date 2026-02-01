@@ -16,6 +16,11 @@ const features = [
     title: 'Risk Score',
     desc: 'AI-powered risk analysis flags unlimited approvals, unverified contracts, and suspicious patterns before you sign.',
   },
+  {
+    icon: '🔔',
+    title: 'Push Alerts',
+    desc: 'Get notified instantly when new transactions hit your queue. Never miss a pending signature via Clawdbot.',
+  },
 ]
 
 const steps = [
@@ -58,7 +63,7 @@ export default function Landing() {
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-8">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          Now in Beta
+          Works with Clawdbot
         </div>
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
           Transaction Firewall
@@ -68,7 +73,7 @@ export default function Landing() {
           </span>
         </h1>
         <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Don't trust, verify — without reading Solidity. SandGuard decodes, simulates, and scores every 
+          Don't trust, verify — without reading Solidity. SandGuard decodes, simulates, and scores every
           transaction before you sign. Know exactly what you're approving.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -76,7 +81,7 @@ export default function Landing() {
             to="/login"
             className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-base hover:opacity-90 transition-opacity"
           >
-            Get Started — $20/mo
+            Get Started — $20/mo in ETH
           </Link>
           <Link
             to="/app"
@@ -92,7 +97,7 @@ export default function Landing() {
         <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-12">
           What SandGuard does
         </h2>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((f) => (
             <div
               key={f.title}
@@ -130,10 +135,11 @@ export default function Landing() {
         </h2>
         <div className="max-w-sm mx-auto bg-slate-900/50 rounded-2xl p-8 border border-slate-800/60 text-center">
           <p className="text-sm text-slate-400 mb-2">Pro</p>
-          <div className="flex items-baseline justify-center gap-1 mb-4">
+          <div className="flex items-baseline justify-center gap-1 mb-2">
             <span className="text-5xl font-bold">$20</span>
             <span className="text-slate-500">/month</span>
           </div>
+          <p className="text-sm text-emerald-400 mb-6">Paid in ETH</p>
           <ul className="text-sm text-slate-400 space-y-3 mb-8 text-left">
             <li className="flex items-center gap-2">
               <span className="text-emerald-400">✓</span> Unlimited transactions
@@ -151,16 +157,16 @@ export default function Landing() {
               <span className="text-emerald-400">✓</span> Multi-chain support
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-emerald-400">✓</span> Push notifications
+              <span className="text-emerald-400">✓</span> Push notifications via Clawdbot
             </li>
           </ul>
           <Link
             to="/login"
             className="block w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold hover:opacity-90 transition-opacity"
           >
-            Start Free Trial
+            Connect Your Safe
           </Link>
-          <p className="text-xs text-slate-600 mt-3">7-day free trial • Cancel anytime</p>
+          <p className="text-xs text-slate-600 mt-3">Pay in ETH to activate • Cancel anytime</p>
         </div>
       </section>
 

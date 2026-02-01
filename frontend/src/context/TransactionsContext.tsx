@@ -2,7 +2,17 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef, Re
 import { Transaction } from '../types'
 import { MOCK_TRANSACTIONS } from '../mockData'
 
-const API_BASE = import.meta.env.VITE_API_URL || ''
+const getApiBase = () => {
+  const saved = localStorage.getItem('sand-config')
+  if (saved) {
+    try {
+      const config = JSON.parse(saved)
+      if (config.apiUrl) return config.apiUrl
+    } catch {}
+  }
+  return import.meta.env.VITE_API_URL || ''
+}
+const API_BASE = getApiBase()
 
 const DEFAULT_SAFE_ADDRESS = '0x32B8057a9213C1060Bad443E43F33FaB9A7e9EC7'
 const DEFAULT_CHAIN_ID = 1

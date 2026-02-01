@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+const PAYMENT_ADDRESS = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
+
 export default function Login() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -10,8 +12,6 @@ export default function Login() {
   // Scaffolding only — no actual auth logic yet
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement actual auth (magic link, wallet connect, etc.)
-    // For now, just redirect to the app
     navigate('/app')
   }
 
@@ -45,7 +45,7 @@ export default function Login() {
             <p className="text-sm text-slate-400">
               {mode === 'login'
                 ? 'Sign in to your SandGuard dashboard'
-                : 'Start protecting your multisig — $20/month'}
+                : 'Start protecting your multisig — $20/month in ETH'}
             </p>
           </div>
 
@@ -91,9 +91,23 @@ export default function Login() {
               type="submit"
               className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity"
             >
-              {mode === 'login' ? 'Sign In' : 'Sign Up — $20/mo'}
+              {mode === 'login' ? 'Sign In' : 'Sign Up — $20/mo in ETH'}
             </button>
           </form>
+
+          {/* Payment Info (signup mode) */}
+          {mode === 'signup' && (
+            <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-2">
+              <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Payment Info</p>
+              <p className="text-xs text-slate-500">
+                After signing up, send <span className="text-emerald-400 font-medium">$20 in ETH</span> to activate your account:
+              </p>
+              <p className="font-mono text-xs text-slate-300 break-all bg-slate-800 rounded-lg px-3 py-2 select-all">
+                {PAYMENT_ADDRESS}
+              </p>
+              <p className="text-xs text-slate-600">ETH on Ethereum mainnet or Base</p>
+            </div>
+          )}
 
           {/* Toggle */}
           <p className="text-center text-sm text-slate-500">

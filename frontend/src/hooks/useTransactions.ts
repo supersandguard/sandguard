@@ -2,7 +2,17 @@ import { useState, useEffect, useCallback } from 'react'
 import { Transaction } from '../types'
 import { MOCK_TRANSACTIONS } from '../mockData'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+const getApiBase = () => {
+  const saved = localStorage.getItem('sand-config')
+  if (saved) {
+    try {
+      const config = JSON.parse(saved)
+      if (config.apiUrl) return config.apiUrl
+    } catch {}
+  }
+  return import.meta.env.VITE_API_URL || ''
+}
+const API_BASE = getApiBase()
 
 interface SafeConfig {
   address: string

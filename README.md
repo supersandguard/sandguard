@@ -1,6 +1,6 @@
 # 🛡️ SandGuard
 
-**Transaction Firewall for Safe Multisig**
+**Transaction Firewall for Safe Multisig** — works with Clawdbot
 
 Don't trust, verify — without reading Solidity. SandGuard decodes, simulates, and risk-scores every pending transaction before you sign.
 
@@ -9,7 +9,16 @@ Don't trust, verify — without reading Solidity. SandGuard decodes, simulates, 
 - **🔍 Decode** — Automatically decode calldata into human-readable function calls. Identifies known protocols (Aave, Uniswap, Morpho, etc.)
 - **⚡ Simulate** — Fork the chain and simulate transactions before signing. See exact balance changes, gas costs, and state diffs.
 - **🛡️ Risk Score** — AI-powered risk analysis flags unlimited approvals, unverified contracts, and suspicious patterns.
+- **🔔 Push Alerts** — Get notified instantly when new transactions hit your queue via Clawdbot.
 - **📱 PWA** — Installable as a mobile app. Works offline with cached data.
+
+## Pricing
+
+**$20/month, paid in ETH.**
+
+Payment address: `0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84`
+
+Accepts ETH on Ethereum mainnet or Base.
 
 ## Architecture
 
@@ -104,6 +113,7 @@ cd backend && npx esbuild src/index.ts --bundle --platform=node --outfile=dist/s
 - **Backend:** Express 4, TypeScript, ethers.js 6
 - **Deployment:** Netlify (Functions + Static)
 - **APIs:** Safe Transaction Service, Etherscan V2, Tenderly
+- **Integration:** Clawdbot (push notifications, Safe management)
 
 ## License
 

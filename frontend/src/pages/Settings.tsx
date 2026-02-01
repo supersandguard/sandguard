@@ -38,13 +38,13 @@ export default function Settings() {
 
   return (
     <div className="px-4 py-6 space-y-6">
-      <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Configuración</h2>
+      <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Settings</h2>
 
       {/* Safe */}
       <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800 space-y-4">
         <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Safe Multisig</h3>
         <div>
-          <label className="text-xs text-slate-500 block mb-1">Dirección del Safe</label>
+          <label className="text-xs text-slate-500 block mb-1">Safe Address</label>
           <input
             type="text"
             value={config.address}
@@ -52,10 +52,10 @@ export default function Settings() {
             placeholder="0x..."
             className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono text-slate-300 focus:outline-none focus:border-emerald-500 placeholder:text-slate-600"
           />
-          <p className="text-xs text-slate-600 mt-1">Dejar vacío para usar datos de demostración</p>
+          <p className="text-xs text-slate-600 mt-1">Leave empty to use demo data</p>
         </div>
         <div>
-          <label className="text-xs text-slate-500 block mb-1">Red</label>
+          <label className="text-xs text-slate-500 block mb-1">Network</label>
           <select
             value={config.chainId}
             onChange={e => setConfig(c => ({ ...c, chainId: parseInt(e.target.value) }))}
@@ -71,12 +71,12 @@ export default function Settings() {
 
       {/* Policies */}
       <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800 space-y-4">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Políticas de Seguridad</h3>
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Security Policies</h3>
         
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm">Bloquear approvals ilimitados</p>
-            <p className="text-xs text-slate-500">Alertar en max uint256 approvals</p>
+            <p className="text-sm">Block unlimited approvals</p>
+            <p className="text-xs text-slate-500">Alert on max uint256 approvals</p>
           </div>
           <button
             onClick={() => setConfig(c => ({ ...c, blockUnlimited: !c.blockUnlimited }))}
@@ -87,7 +87,7 @@ export default function Settings() {
         </div>
 
         <div>
-          <label className="text-xs text-slate-500 block mb-1">Umbral de transferencia grande (USD)</label>
+          <label className="text-xs text-slate-500 block mb-1">Large transfer threshold (USD)</label>
           <input
             type="number"
             value={config.largeThreshold}
@@ -127,16 +127,16 @@ export default function Settings() {
         onClick={handleSave}
         className="w-full py-3 rounded-xl bg-emerald-500/20 text-emerald-400 font-semibold text-sm border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors active:scale-95"
       >
-        {saved ? '✓ Guardado' : 'Guardar y Recargar'}
+        {saved ? '✓ Saved' : 'Save & Reload'}
       </button>
 
       {/* Info */}
       <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Acerca de</h3>
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">About</h3>
         <div className="space-y-1 text-xs text-slate-500">
           <p>SandGuard v0.2 — Transaction Firewall PWA</p>
           <p>Backend: {import.meta.env.VITE_API_URL || '/api (relative)'}</p>
-          <p>Modo: {config.address ? 'Live' : 'Demo (mock data)'}</p>
+          <p>Mode: {config.address ? 'Live' : 'Demo (mock data)'}</p>
         </div>
       </div>
     </div>
