@@ -24,3 +24,4 @@ Thumbs.db
 
 # PWA generated
 dev-dist/
+backend/data/
