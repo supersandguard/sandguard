@@ -7,47 +7,60 @@ const PAYMENT_ADDRESS = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
 export default function Login() {
   const navigate = useNavigate()
   const { login, setDemoMode } = useAuth()
-  const [step, setStep] = useState<'choose' | 'eth-pay' | 'eth-verify' | 'card'>('choose')
+  const [step, setStep] = useState<'choose' | 'eth-pay' | 'eth-verify' | 'promo'>('choose')
   const [txHash, setTxHash] = useState('')
   const [copied, setCopied] = useState(false)
-  const [email, setEmail] = useState('')
+  const [promoCode, setPromoCode] = useState('')
   const [verifying, setVerifying] = useState(false)
-
-  const handleWalletConnect = () => {
-    setStep('eth-pay')
-  }
-
-  const handleStripe = async () => {
-    // TODO: Call /api/stripe/create-checkout
-    // For now show a coming soon state
-    setStep('card')
-  }
+  const [error, setError] = useState('')
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!txHash.trim()) return
-
     setVerifying(true)
+    setError('')
     try {
-      // Call the API to verify payment and get API key
-      const response = await fetch('/api/payments/verify', {
+      const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
+      const response = await fetch(`${API_BASE}/api/payments/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ txHash: txHash.trim() })
+        body: JSON.stringify({ txHash: txHash.trim(), address: txHash.trim() })
       })
-
-      if (response.ok) {
-        const data = await response.json()
-        // Store authentication data and redirect
-        login(data.apiKey, data.safeAddress || '')
+      const data = await response.json()
+      if (response.ok && data.apiKey) {
+        login(data.apiKey, '')
         navigate('/app')
       } else {
-        const error = await response.text()
-        alert(`Verification failed: ${error}`)
+        setError(data.error || 'Verification failed')
       }
-    } catch (error) {
-      console.error('Verification error:', error)
-      alert('Verification failed. Please check your connection and try again.')
+    } catch (err) {
+      setError('Connection failed. Check your API URL in Settings.')
+    } finally {
+      setVerifying(false)
+    }
+  }
+
+  const handlePromoRedeem = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!promoCode.trim()) return
+    setVerifying(true)
+    setError('')
+    try {
+      const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
+      const response = await fetch(`${API_BASE}/api/promo/redeem`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: promoCode.trim(), address: `promo:${promoCode.trim()}` })
+      })
+      const data = await response.json()
+      if (response.ok && data.apiKey) {
+        login(data.apiKey, '')
+        navigate('/app')
+      } else {
+        setError(data.error || 'Invalid promo code')
+      }
+    } catch (err) {
+      setError('Connection failed. Check your API URL in Settings.')
     } finally {
       setVerifying(false)
     }
@@ -75,9 +88,16 @@ export default function Login() {
 
       {/* Main */}
       <main className="flex-1 flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-sm space-y-8">
+        <div className="w-full max-w-sm space-y-6">
 
-          {/* Step: Choose payment method */}
+          {/* Error banner */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-400">
+              {error}
+            </div>
+          )}
+
+          {/* Step: Choose */}
           {step === 'choose' && (
             <>
               <div className="text-center">
@@ -89,7 +109,7 @@ export default function Login() {
 
               {/* ETH Payment */}
               <button
-                onClick={handleWalletConnect}
+                onClick={() => { setStep('eth-pay'); setError('') }}
                 className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-emerald-500/50 transition-all flex items-center justify-between px-5"
               >
                 <div className="flex items-center gap-3">
@@ -102,19 +122,19 @@ export default function Login() {
                 <span className="text-xs text-emerald-400 font-medium">$20/mo</span>
               </button>
 
-              {/* Stripe / Card Payment */}
+              {/* Promo Code */}
               <button
-                onClick={handleStripe}
-                className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-blue-500/50 transition-all flex items-center justify-between px-5"
+                onClick={() => { setStep('promo'); setError('') }}
+                className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-500/50 transition-all flex items-center justify-between px-5"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-lg">💳</span>
+                  <span className="text-lg">🎟️</span>
                   <div className="text-left">
-                    <p className="font-medium text-sm">Pay with Card</p>
-                    <p className="text-xs text-slate-500">Via Stripe</p>
+                    <p className="font-medium text-sm">Have a promo code?</p>
+                    <p className="text-xs text-slate-500">Friends & Family access</p>
                   </div>
                 </div>
-                <span className="text-xs text-blue-400 font-medium">$20/mo</span>
+                <span className="text-xs text-amber-400 font-medium">FREE</span>
               </button>
 
               {/* What you get */}
@@ -167,7 +187,6 @@ export default function Login() {
                     </span>
                   </div>
                 </div>
-
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <p className="text-xs text-slate-500 mb-1">Amount</p>
@@ -186,10 +205,7 @@ export default function Login() {
               >
                 I've sent the payment →
               </button>
-
-              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">
-                ← Back
-              </button>
+              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
             </>
           )}
 
@@ -198,82 +214,58 @@ export default function Login() {
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Verify Payment</h1>
-                <p className="text-sm text-slate-400">
-                  Paste your transaction hash to get your API key
-                </p>
+                <p className="text-sm text-slate-400">Paste your transaction hash to get your API key</p>
               </div>
-
               <form onSubmit={handleVerify} className="space-y-4">
                 <div>
                   <label className="text-xs text-slate-500 block mb-1.5">Transaction Hash</label>
                   <input
-                    type="text"
-                    value={txHash}
-                    onChange={(e) => setTxHash(e.target.value)}
+                    type="text" value={txHash} onChange={(e) => setTxHash(e.target.value)}
                     placeholder="0x..."
                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none focus:border-emerald-500 placeholder:text-slate-600"
                   />
                 </div>
-                <button
-                  type="submit"
-                  disabled={verifying || !txHash.trim()}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                <button type="submit" disabled={verifying || !txHash.trim()}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {verifying ? 'Verifying...' : 'Verify & Get API Key'}
                 </button>
               </form>
-
-              <button onClick={() => setStep('eth-pay')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">
-                ← Back
-              </button>
+              <button onClick={() => setStep('eth-pay')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
             </>
           )}
 
-          {/* Step: Stripe / Card */}
-          {step === 'card' && (
+          {/* Step: Promo Code */}
+          {step === 'promo' && (
             <>
               <div className="text-center">
-                <h1 className="text-2xl font-bold mb-2">Pay with Card</h1>
-                <p className="text-sm text-slate-400">
-                  $20/month via Stripe
-                </p>
+                <h1 className="text-2xl font-bold mb-2">Promo Code</h1>
+                <p className="text-sm text-slate-400">Enter your Friends & Family code</p>
               </div>
-
-              <div className="space-y-4">
+              <form onSubmit={handlePromoRedeem} className="space-y-4">
                 <div>
-                  <label className="text-xs text-slate-500 block mb-1.5">Email</label>
+                  <label className="text-xs text-slate-500 block mb-1.5">Code</label>
                   <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:outline-none focus:border-blue-500 placeholder:text-slate-600"
+                    type="text" value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                    placeholder="SG-XXXXXXXX"
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none focus:border-amber-500 placeholder:text-slate-600 uppercase tracking-wider text-center text-lg"
                   />
                 </div>
-                <button
-                  onClick={() => {
-                    // TODO: Create Stripe checkout session and redirect
-                    alert('Stripe integration coming soon! Use ETH payment for now.')
-                  }}
-                  className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-500 transition-colors"
+                <button type="submit" disabled={verifying || !promoCode.trim()}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
-                  Continue to Checkout →
+                  {verifying ? 'Activating...' : 'Activate Free Access'}
                 </button>
-              </div>
-
-              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">
-                ← Back
-              </button>
+              </form>
+              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
             </>
           )}
 
-          {/* Demo link - always visible */}
+          {/* Demo link */}
           <div className="text-center pt-4 border-t border-slate-800/40">
-            <button 
-              onClick={() => {
-                setDemoMode()
-                navigate('/app')
-              }}
+            <button
+              onClick={() => { setDemoMode(); navigate('/app') }}
               className="text-sm text-slate-500 hover:text-emerald-400 transition-colors"
             >
               Skip — try the demo →

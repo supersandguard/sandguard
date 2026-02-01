@@ -46,6 +46,24 @@ db.exec(`
   );
 
   CREATE INDEX IF NOT EXISTS idx_usage_key_ts ON api_usage(api_key, timestamp);
+
+  CREATE TABLE IF NOT EXISTS promo_codes (
+    code TEXT PRIMARY KEY,
+    plan TEXT NOT NULL DEFAULT 'pro',
+    duration_days INTEGER NOT NULL DEFAULT 90,
+    max_uses INTEGER NOT NULL DEFAULT 1,
+    used_count INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000),
+    active INTEGER NOT NULL DEFAULT 1
+  );
+
+  CREATE TABLE IF NOT EXISTS promo_redemptions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code TEXT NOT NULL,
+    address TEXT NOT NULL,
+    redeemed_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000),
+    UNIQUE(code, address)
+  );
 `)
 
 // Prepared statements
@@ -77,6 +95,14 @@ const stmts = {
   getUsage: db.prepare('SELECT COUNT(*) as count FROM api_usage WHERE api_key = ? AND timestamp > ?'),
 
   getAllActive: db.prepare('SELECT * FROM subscriptions WHERE expires_at > ?'),
+
+  // Promo codes
+  insertPromo: db.prepare('INSERT OR IGNORE INTO promo_codes (code, plan, duration_days, max_uses) VALUES (?, ?, ?, ?)'),
+  getPromo: db.prepare('SELECT * FROM promo_codes WHERE code = ? AND active = 1'),
+  incrementPromoUse: db.prepare('UPDATE promo_codes SET used_count = used_count + 1 WHERE code = ?'),
+  insertRedemption: db.prepare('INSERT INTO promo_redemptions (code, address, redeemed_at) VALUES (?, ?, ?)'),
+  getRedemption: db.prepare('SELECT * FROM promo_redemptions WHERE code = ? AND address = ?'),
+  getAllPromos: db.prepare('SELECT * FROM promo_codes ORDER BY created_at DESC'),
 }
 
 // Helper functions
@@ -170,6 +196,62 @@ export function getApiUsageCount(apiKey: string, sinceMs: number): number {
 
 export function getAllActiveSubscriptions(): Subscription[] {
   return stmts.getAllActive.all(Date.now()) as Subscription[]
+}
+
+// Promo code functions
+export interface PromoCode {
+  code: string
+  plan: string
+  duration_days: number
+  max_uses: number
+  used_count: number
+  created_at: number
+  active: number
+}
+
+export function createPromoCode(code: string, durationDays = 90, maxUses = 1, plan = 'pro'): void {
+  stmts.insertPromo.run(code, plan, durationDays, maxUses)
+}
+
+export function redeemPromoCode(code: string, address: string): { apiKey: string; expiresAt: number } | { error: string } {
+  const promo = stmts.getPromo.get(code) as PromoCode | undefined
+  if (!promo) return { error: 'Invalid or expired promo code' }
+  if (promo.used_count >= promo.max_uses) return { error: 'Promo code has been fully redeemed' }
+  
+  // Check if already redeemed by this address
+  const existing = stmts.getRedemption.get(code, address.toLowerCase())
+  if (existing) return { error: 'You have already redeemed this code' }
+
+  // Activate subscription
+  const durationMs = promo.duration_days * 24 * 60 * 60 * 1000
+  const result = activateSubscription({
+    address,
+    plan: promo.plan,
+    paidTxHash: `promo:${code}`,
+    durationMs,
+  })
+
+  // Record redemption
+  stmts.incrementPromoUse.run(code)
+  stmts.insertRedemption.run(code, address.toLowerCase(), Date.now())
+
+  return result
+}
+
+export function getAllPromoCodes(): PromoCode[] {
+  return stmts.getAllPromos.all() as PromoCode[]
+}
+
+// Seed F&F promo codes
+const FF_CODES = [
+  'SG-B8UK5ILU', 'SG-D5FKT83Y', 'SG-J3H2ZIRX', 'SG-ZNG01TRV', 'SG-E15I1NAD',
+  'SG-CSMNWJ8Q', 'SG-VK4NK60X', 'SG-89599Z1I', 'SG-5KPE1GUQ', 'SG-M790M4BY',
+  'SG-Z0AAWH7E', 'SG-1CTN5ZKX', 'SG-BZGL7LIO', 'SG-D0R7IJOD', 'SG-9MI8H4B6',
+  'SG-KJD5O1TO', 'SG-ICGF1ADP', 'SG-H24EU1GO', 'SG-3SGU7G2N', 'SG-B34VFPD8',
+]
+
+for (const code of FF_CODES) {
+  createPromoCode(code, 90, 1, 'pro') // 90 days, 1 use each
 }
 
 export default db
