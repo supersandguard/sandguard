@@ -19,15 +19,15 @@ export default function Login() {
     setVerifying(true)
     setError('')
     try {
-      const payment = event.payment || event
+      const payment = event?.payment || event
       const payerAddress = payment?.source?.payerAddress || 'unknown'
       const paymentId = payment?.id || event?.paymentId || 'unknown'
-      
+
       const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
       const response = await fetch(`${API_BASE}/api/payments/activate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           address: payerAddress,
           paymentId: paymentId
         })
@@ -39,7 +39,7 @@ export default function Login() {
       } else {
         setError(data.error || 'Payment activation failed')
       }
-    } catch (err) {
+    } catch {
       setError('Connection failed. Check your API URL in Settings.')
     } finally {
       setVerifying(false)
@@ -65,7 +65,7 @@ export default function Login() {
       } else {
         setError(data.error || 'Invalid promo code')
       }
-    } catch (err) {
+    } catch {
       setError('Connection failed. Check your API URL in Settings.')
     } finally {
       setVerifying(false)
@@ -108,30 +108,21 @@ export default function Login() {
               </div>
 
               {/* Daimo Pay Button */}
-              <DaimoPayButton.Custom
-                toAddress={PAYMENT_ADDRESS as `0x${string}`}
-                toChain={BASE_CHAIN_ID}
-                toToken={USDC_BASE as `0x${string}`}
-                toUnits="20.00"
-                intent="Subscribe"
-                onPaymentCompleted={handlePaymentCompleted}
-              >
-                {({ show }) => (
-                  <button
-                    onClick={() => { show(); setError('') }}
-                    className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-emerald-500/50 transition-all flex items-center justify-between px-5"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg">◆</span>
-                      <div className="text-left">
-                        <p className="font-medium text-sm">Pay with any crypto</p>
-                        <p className="text-xs text-slate-500">1200+ tokens, 20+ chains</p>
-                      </div>
-                    </div>
-                    <span className="text-xs text-emerald-400 font-medium">$20/mo</span>
-                  </button>
-                )}
-              </DaimoPayButton.Custom>
+              <div className="w-full">
+                <DaimoPayButton
+                  appId="pay-demo"
+                  toAddress={PAYMENT_ADDRESS as `0x${string}`}
+                  toChain={BASE_CHAIN_ID}
+                  toToken={USDC_BASE as `0x${string}`}
+                  toUnits="20.00"
+                  intent="Subscribe to SandGuard"
+                  onPaymentCompleted={handlePaymentCompleted}
+                />
+              </div>
+
+              <p className="text-xs text-center text-slate-600">
+                Pay with 1200+ tokens on 20+ chains
+              </p>
 
               {/* Promo Code */}
               <button
