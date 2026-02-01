@@ -20,7 +20,6 @@ export async function testConnection(apiUrl: string): Promise<boolean> {
     const res = await fetch(`${apiUrl}/api/health`, {
       method: 'GET',
       headers: { 'Accept': 'application/json' },
-      // Set a reasonable timeout
       signal: AbortSignal.timeout(5000)
     });
     return res.ok;
