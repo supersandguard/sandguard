@@ -8,6 +8,7 @@ import decodeRouter from './routes/decode';
 import explainRouter from './routes/explain';
 import riskRouter from './routes/risk';
 import pollRouter from './routes/poll';
+import paymentsRouter from './routes/payments';
 
 dotenv.config();
 
@@ -23,10 +24,11 @@ app.use('/api/decode', decodeRouter);
 app.use('/api/explain', explainRouter);
 app.use('/api/risk', riskRouter);
 app.use('/api/poll', pollRouter);
+app.use('/api/payments', paymentsRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'SandGuard API', version: '0.2.0' });
+  res.json({ status: 'ok', service: 'SandGuard API', version: '0.3.0' });
 });
 
 // Export for serverless (Netlify Functions)
