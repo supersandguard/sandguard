@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { testConnection } from '../api'
 
 interface Config {
   address: string
@@ -7,6 +8,7 @@ interface Config {
   largeThreshold: string
   tenderlyKey: string
   etherscanKey: string
+  apiUrl: string
 }
 
 const DEFAULT_CONFIG: Config = {
@@ -16,6 +18,7 @@ const DEFAULT_CONFIG: Config = {
   largeThreshold: '10000',
   tenderlyKey: '',
   etherscanKey: '',
+  apiUrl: '',
 }
 
 export default function Settings() {
@@ -24,11 +27,36 @@ export default function Settings() {
     return saved ? { ...DEFAULT_CONFIG, ...JSON.parse(saved) } : DEFAULT_CONFIG
   })
   const [saved, setSaved] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'connected' | 'error'>('unknown')
+  const [testingConnection, setTestingConnection] = useState(false)
 
   useEffect(() => {
     localStorage.setItem('sand-config', JSON.stringify(config))
     setSaved(false)
+    // Reset connection status when URL changes
+    setConnectionStatus('unknown')
   }, [config])
+
+  // Test connection whenever API URL changes
+  useEffect(() => {
+    const testApiConnection = async () => {
+      const apiUrl = config.apiUrl || ''
+      if (apiUrl || !config.apiUrl) { // Test relative URL too when empty
+        setTestingConnection(true)
+        try {
+          const isConnected = await testConnection(apiUrl)
+          setConnectionStatus(isConnected ? 'connected' : 'error')
+        } catch (error) {
+          setConnectionStatus('error')
+        } finally {
+          setTestingConnection(false)
+        }
+      }
+    }
+
+    const timeoutId = setTimeout(testApiConnection, 500)
+    return () => clearTimeout(timeoutId)
+  }, [config.apiUrl])
 
   const handleSave = () => {
     localStorage.setItem('sand-config', JSON.stringify(config))
@@ -39,6 +67,41 @@ export default function Settings() {
   return (
     <div className="px-4 py-6 space-y-6">
       <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Settings</h2>
+
+      {/* Connection */}
+      <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800 space-y-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Connection</h3>
+        <div>
+          <label className="text-xs text-slate-500 block mb-1">API URL</label>
+          <input
+            type="url"
+            value={config.apiUrl}
+            onChange={e => setConfig(c => ({ ...c, apiUrl: e.target.value }))}
+            placeholder="Leave empty for relative /api"
+            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono text-slate-300 focus:outline-none focus:border-emerald-500 placeholder:text-slate-600"
+          />
+          <p className="text-xs text-slate-600 mt-1">Custom API server URL (empty = relative /api)</p>
+        </div>
+        
+        {/* Connection Status */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            {testingConnection ? (
+              <div className="w-2 h-2 rounded-full bg-slate-500 animate-pulse" />
+            ) : (
+              <div className={`w-2 h-2 rounded-full ${
+                connectionStatus === 'connected' ? 'bg-emerald-500' : 
+                connectionStatus === 'error' ? 'bg-red-500' : 'bg-slate-500'
+              }`} />
+            )}
+            <span className="text-xs text-slate-500">
+              {testingConnection ? 'Testing...' : 
+               connectionStatus === 'connected' ? 'Connected' : 
+               connectionStatus === 'error' ? 'Connection failed' : 'Unknown'}
+            </span>
+          </div>
+        </div>
+      </div>
 
       {/* Safe */}
       <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800 space-y-4">

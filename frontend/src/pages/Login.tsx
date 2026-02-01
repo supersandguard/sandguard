@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const PAYMENT_ADDRESS = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
 
 export default function Login() {
   const navigate = useNavigate()
+  const { login, setDemoMode } = useAuth()
   const [step, setStep] = useState<'choose' | 'eth-pay' | 'eth-verify' | 'card'>('choose')
   const [txHash, setTxHash] = useState('')
   const [copied, setCopied] = useState(false)
   const [email, setEmail] = useState('')
+  const [verifying, setVerifying] = useState(false)
 
   const handleWalletConnect = () => {
     setStep('eth-pay')
@@ -22,8 +25,32 @@ export default function Login() {
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Call /api/payments/verify
-    navigate('/app')
+    if (!txHash.trim()) return
+
+    setVerifying(true)
+    try {
+      // Call the API to verify payment and get API key
+      const response = await fetch('/api/payments/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ txHash: txHash.trim() })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Store authentication data and redirect
+        login(data.apiKey, data.safeAddress || '')
+        navigate('/app')
+      } else {
+        const error = await response.text()
+        alert(`Verification failed: ${error}`)
+      }
+    } catch (error) {
+      console.error('Verification error:', error)
+      alert('Verification failed. Please check your connection and try again.')
+    } finally {
+      setVerifying(false)
+    }
   }
 
   const copyAddress = () => {
@@ -189,9 +216,10 @@ export default function Login() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity"
+                  disabled={verifying || !txHash.trim()}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Verify & Get API Key
+                  {verifying ? 'Verifying...' : 'Verify & Get API Key'}
                 </button>
               </form>
 
@@ -241,9 +269,15 @@ export default function Login() {
 
           {/* Demo link - always visible */}
           <div className="text-center pt-4 border-t border-slate-800/40">
-            <Link to="/app" className="text-sm text-slate-500 hover:text-emerald-400 transition-colors">
+            <button 
+              onClick={() => {
+                setDemoMode()
+                navigate('/app')
+              }}
+              className="text-sm text-slate-500 hover:text-emerald-400 transition-colors"
+            >
               Skip — try the demo →
-            </Link>
+            </button>
           </div>
         </div>
       </main>

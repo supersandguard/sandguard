@@ -1,32 +1,10 @@
 import { Router, Request, Response } from 'express'
+import { activateSubscription, getSubscriptionByAddress, getSubscriptionByApiKey } from '../services/db'
 
 const router = Router()
 
 const PAYMENT_WALLET = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
 const MONTHLY_PRICE_USD = 20
-const API_KEY_PREFIX = 'sg_'
-
-// In-memory store (replace with SQLite later)
-interface Subscription {
-  address: string
-  apiKey: string
-  paidTxHash: string
-  paidAt: number
-  expiresAt: number
-  plan: string
-}
-
-const subscriptions: Map<string, Subscription> = new Map()
-
-// Generate API key
-function generateApiKey(): string {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
-  let key = API_KEY_PREFIX
-  for (let i = 0; i < 32; i++) {
-    key += chars[Math.floor(Math.random() * chars.length)]
-  }
-  return key
-}
 
 // GET /api/payments/info - Public payment info
 router.get('/info', (_req: Request, res: Response) => {
@@ -50,12 +28,12 @@ router.post('/verify', async (req: Request, res: Response) => {
 
   try {
     // Check if already verified
-    const existing = subscriptions.get(address.toLowerCase())
-    if (existing && existing.expiresAt > Date.now()) {
+    const existing = getSubscriptionByAddress(address)
+    if (existing && existing.expires_at > Date.now()) {
       return res.json({
         status: 'active',
-        apiKey: existing.apiKey,
-        expiresAt: new Date(existing.expiresAt).toISOString(),
+        apiKey: existing.api_key,
+        expiresAt: new Date(existing.expires_at).toISOString(),
         message: 'Subscription already active'
       })
     }
@@ -83,34 +61,25 @@ router.post('/verify', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Transaction sender does not match provided address' })
     }
 
-    // Verify amount (at least ~$15 worth of ETH at conservative pricing)
+    // Verify amount (at least ~0.003 ETH as minimum)
     const valueWei = BigInt(tx.value)
-    const minWei = BigInt('3000000000000000') // ~0.003 ETH (~$8 at $2700/ETH, generous minimum)
+    const minWei = BigInt('3000000000000000') // ~0.003 ETH
     
     if (valueWei < minWei) {
       return res.status(400).json({ error: 'Payment amount too low. Minimum ~$20 in ETH required.' })
     }
 
-    // Issue API key
-    const apiKey = generateApiKey()
-    const now = Date.now()
-    const thirtyDays = 30 * 24 * 60 * 60 * 1000
-    
-    const sub: Subscription = {
-      address: address.toLowerCase(),
-      apiKey,
+    // Activate subscription with SQLite
+    const { apiKey, expiresAt } = activateSubscription({
+      address,
       paidTxHash: txHash,
-      paidAt: now,
-      expiresAt: now + thirtyDays,
-      plan: 'pro'
-    }
-    
-    subscriptions.set(address.toLowerCase(), sub)
+      plan: 'pro',
+    })
 
     return res.json({
       status: 'activated',
       apiKey,
-      expiresAt: new Date(sub.expiresAt).toISOString(),
+      expiresAt: new Date(expiresAt).toISOString(),
       plan: 'pro',
       message: 'Subscription activated! Use your API key in the Authorization header.'
     })
@@ -124,43 +93,43 @@ router.post('/verify', async (req: Request, res: Response) => {
 // GET /api/payments/status/:address - Check subscription status
 router.get('/status/:address', (req: Request, res: Response) => {
   const address = req.params.address.toLowerCase()
-  const sub = subscriptions.get(address)
+  const sub = getSubscriptionByAddress(address)
   
   if (!sub) {
     return res.json({ status: 'inactive', message: 'No active subscription' })
   }
   
-  if (sub.expiresAt < Date.now()) {
-    return res.json({ status: 'expired', expiresAt: new Date(sub.expiresAt).toISOString() })
+  if (sub.expires_at < Date.now()) {
+    return res.json({ status: 'expired', expiresAt: new Date(sub.expires_at).toISOString() })
   }
   
   return res.json({
     status: 'active',
     plan: sub.plan,
-    expiresAt: new Date(sub.expiresAt).toISOString(),
-    apiKey: sub.apiKey.slice(0, 8) + '...'
+    expiresAt: new Date(sub.expires_at).toISOString(),
+    apiKey: sub.api_key.slice(0, 8) + '...'
   })
 })
 
 // Middleware: validate API key
 export function requireApiKey(req: Request, res: Response, next: Function) {
+  // Allow demo mode without API key for /api/safe and /api/health
   const authHeader = req.headers.authorization
   if (!authHeader || !authHeader.startsWith('Bearer sg_')) {
     return res.status(401).json({ error: 'Valid API key required. Get one at supersandguard.com' })
   }
   
   const apiKey = authHeader.replace('Bearer ', '')
-  const sub = Array.from(subscriptions.values()).find(s => s.apiKey === apiKey)
+  const sub = getSubscriptionByApiKey(apiKey)
   
   if (!sub) {
     return res.status(401).json({ error: 'Invalid API key' })
   }
   
-  if (sub.expiresAt < Date.now()) {
+  if (sub.expires_at < Date.now()) {
     return res.status(403).json({ error: 'Subscription expired. Please renew.' })
   }
   
-  // Attach subscription to request
   ;(req as any).subscription = sub
   next()
 }
