@@ -139,7 +139,7 @@ export default function Landing() {
             <span className="text-5xl font-bold">$20</span>
             <span className="text-slate-500">/month</span>
           </div>
-          <p className="text-sm text-emerald-400 mb-6">Paid in ETH</p>
+          <p className="text-sm text-slate-400 mb-6">ETH or Credit Card</p>
           <ul className="text-sm text-slate-400 space-y-3 mb-8 text-left">
             <li className="flex items-center gap-2">
               <span className="text-emerald-400">✓</span> Unlimited transactions
@@ -166,7 +166,7 @@ export default function Landing() {
           >
             Connect Your Safe
           </Link>
-          <p className="text-xs text-slate-600 mt-3">Pay in ETH to activate • Cancel anytime</p>
+          <p className="text-xs text-slate-600 mt-3">Pay with ETH or card • Cancel anytime</p>
         </div>
       </section>
 

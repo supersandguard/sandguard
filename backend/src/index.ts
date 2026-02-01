@@ -9,6 +9,7 @@ import explainRouter from './routes/explain';
 import riskRouter from './routes/risk';
 import pollRouter from './routes/poll';
 import paymentsRouter from './routes/payments';
+import stripeRouter from './routes/stripe';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api/explain', explainRouter);
 app.use('/api/risk', riskRouter);
 app.use('/api/poll', pollRouter);
 app.use('/api/payments', paymentsRouter);
+app.use('/api/stripe', stripeRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => {
