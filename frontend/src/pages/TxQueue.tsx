@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { RefreshCw, ShieldCheck } from 'lucide-react'
 import { useTransactionsContext } from '../context/TransactionsContext'
@@ -10,6 +11,8 @@ function formatTime(date: Date | null) {
 
 export default function TxQueue() {
   const { transactions, loading, refreshing, lastUpdated, refresh } = useTransactionsContext()
+
+  useEffect(() => { document.title = 'TX Queue — SandGuard' }, [])
 
   return (
     <div className="px-4 py-6">

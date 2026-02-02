@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Search, Zap, Shield, Bell, Check, X } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import type { ReactNode } from 'react'
 
 const features: { icon: ReactNode; title: string; desc: string }[] = [
@@ -33,6 +35,11 @@ const steps = [
 ]
 
 export default function Landing() {
+  const navigate = useNavigate()
+  const { setDemoMode } = useAuth()
+
+  useEffect(() => { document.title = 'SandGuard — Transaction Firewall for Safe Multisig' }, [])
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       {/* Header */}
@@ -65,7 +72,7 @@ export default function Landing() {
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-8">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          Works with Clawdbot
+          Open Beta
         </div>
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
           Transaction Firewall
@@ -85,12 +92,12 @@ export default function Landing() {
           >
             Start Free — No Payment Required
           </Link>
-          <Link
-            to="/app"
+          <button
+            onClick={() => { setDemoMode(); navigate('/app') }}
             className="px-8 py-3.5 rounded-xl bg-slate-800 text-slate-300 font-medium text-base border border-slate-700 hover:border-slate-600 transition-colors"
           >
             Try Demo →
-          </Link>
+          </button>
         </div>
       </section>
 

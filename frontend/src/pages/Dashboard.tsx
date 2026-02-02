@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { RefreshCw, ShieldCheck } from 'lucide-react'
+import { RefreshCw, ShieldCheck, Settings } from 'lucide-react'
 import { useTransactionsContext } from '../context/TransactionsContext'
 
 const CHAIN_NAMES: Record<number, string> = {
@@ -26,6 +27,8 @@ export default function Dashboard() {
     lastUpdated, safeInfo, safeAddress, chainId, isDemo, refresh,
   } = useTransactionsContext()
   const pending = transactions.filter(t => !t.isExecuted)
+
+  useEffect(() => { document.title = 'Dashboard — SandGuard' }, [])
 
   return (
     <div className="px-4 py-6 space-y-6">
@@ -121,13 +124,32 @@ export default function Dashboard() {
           </div>
         ) : pending.length === 0 ? (
           <div className="bg-slate-900/50 rounded-2xl border border-slate-800/50 py-12 px-6 text-center">
-            <ShieldCheck className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <p className="text-sm font-medium text-slate-300 mb-1">No pending transactions</p>
-            <p className="text-xs text-slate-500">Your Safe is secure</p>
-            {lastUpdated && (
-              <p className="text-xs text-slate-600 mt-3">
-                Last checked: {formatTime(lastUpdated)}
-              </p>
+            {isDemo || safeAddress ? (
+              <>
+                <ShieldCheck className="w-10 h-10 text-slate-600 mx-auto mb-3" />
+                <p className="text-sm font-medium text-slate-300 mb-1">No pending transactions</p>
+                <p className="text-xs text-slate-500">Your Safe is secure</p>
+                {lastUpdated && (
+                  <p className="text-xs text-slate-600 mt-3">
+                    Last checked: {formatTime(lastUpdated)}
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <Settings className="w-10 h-10 text-slate-600 mx-auto mb-3" />
+                <p className="text-sm font-medium text-slate-300 mb-1">No Safe configured yet</p>
+                <p className="text-xs text-slate-500 max-w-xs mx-auto mb-4">
+                  Add your Safe multisig address in Settings to start monitoring transactions, decoding calldata, and getting risk scores.
+                </p>
+                <Link
+                  to="/app/settings"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors text-sm font-medium"
+                >
+                  <Settings className="w-4 h-4" />
+                  Configure Safe
+                </Link>
+              </>
             )}
           </div>
         ) : (

@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 const DaimoPayButton = lazy(() => import('@daimo/pay').then(m => ({ default: m.DaimoPayButton })))
@@ -22,6 +22,9 @@ const BASE_CHAIN_ID = 8453
 export default function Login() {
   const navigate = useNavigate()
   const { login, setDemoMode } = useAuth()
+
+  useEffect(() => { document.title = 'Get Started — SandGuard' }, [])
+
   const [step, setStep] = useState<'choose' | 'free' | 'promo' | 'recover'>('choose')
   const [promoCode, setPromoCode] = useState('')
   const [recoverAddress, setRecoverAddress] = useState('')

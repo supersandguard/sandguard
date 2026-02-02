@@ -23,6 +23,8 @@ const DEFAULT_CONFIG: Config = {
 }
 
 export default function Settings() {
+  useEffect(() => { document.title = 'Settings — SandGuard' }, [])
+
   const [config, setConfig] = useState<Config>(() => {
     const saved = localStorage.getItem('sand-config')
     return saved ? { ...DEFAULT_CONFIG, ...JSON.parse(saved) } : DEFAULT_CONFIG
