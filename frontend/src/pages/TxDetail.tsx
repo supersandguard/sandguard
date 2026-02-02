@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { FileText, Coins, Search, ShieldCheck, Fuel, Package, X, Check } from 'lucide-react'
 import { useTransactionsContext } from '../context/TransactionsContext'
 import RiskBadge from '../components/RiskBadge'
 import BalanceChangeCard from '../components/BalanceChangeCard'
@@ -36,7 +37,7 @@ export default function TxDetail() {
       {/* Explanation */}
       {tx.explanation && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">📝 Explanation</h3>
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> Explanation</h3>
           <ul className="space-y-2">
             {tx.explanation.details.map((d, i) => (
               <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
@@ -60,7 +61,7 @@ export default function TxDetail() {
       {/* Balance Changes */}
       {tx.simulation && tx.simulation.balanceChanges.length > 0 && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">💰 Balance Changes</h3>
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Coins className="w-3.5 h-3.5" /> Balance Changes</h3>
           <div className="space-y-2">
             {tx.simulation.balanceChanges.map((bc, i) => (
               <BalanceChangeCard key={i} change={bc} />
@@ -72,7 +73,7 @@ export default function TxDetail() {
       {/* Decoded */}
       {tx.decoded && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">🔍 Decoded Data</h3>
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Search className="w-3.5 h-3.5" /> Decoded Data</h3>
           <div className="space-y-3">
             <div>
               <p className="text-xs text-slate-500">Function</p>
@@ -103,7 +104,7 @@ export default function TxDetail() {
       {/* Risk Details */}
       {tx.risk && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">🛡️ Risk Analysis</h3>
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5" /> Risk Analysis</h3>
           <div className="space-y-2">
             {tx.risk.reasons.map((r, i) => (
               <div key={i} className={`flex items-start gap-2 text-sm ${
@@ -120,7 +121,7 @@ export default function TxDetail() {
       {/* Simulation */}
       {tx.simulation && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">⛽ Simulation</h3>
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Fuel className="w-3.5 h-3.5" /> Simulation</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-xs text-slate-500">Status</p>
@@ -137,7 +138,7 @@ export default function TxDetail() {
       {/* Raw Data */}
       <details className="bg-slate-900 rounded-2xl border border-slate-800">
         <summary className="p-5 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-slate-300">
-          📦 Raw Data
+          <span className="inline-flex items-center gap-1.5"><Package className="w-3.5 h-3.5" /> Raw Data</span>
         </summary>
         <div className="px-5 pb-5 space-y-2">
           <div>
@@ -158,10 +159,10 @@ export default function TxDetail() {
       {/* Action Buttons */}
       <div className="flex gap-3 pt-2">
         <button className="flex-1 py-3.5 rounded-xl bg-red-500/20 text-red-400 font-semibold text-sm border border-red-500/30 hover:bg-red-500/30 transition-colors active:scale-95">
-          ✕ Reject
+          <span className="inline-flex items-center gap-1"><X className="w-4 h-4" /> Reject</span>
         </button>
         <button className="flex-1 py-3.5 rounded-xl bg-emerald-500/20 text-emerald-400 font-semibold text-sm border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors active:scale-95">
-          ✓ Sign
+          <span className="inline-flex items-center gap-1"><Check className="w-4 h-4" /> Sign</span>
         </button>
       </div>
     </div>

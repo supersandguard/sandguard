@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { DaimoPayButton } from '@daimo/pay'
+import { Shield, Check, X, Ticket } from 'lucide-react'
 
 const getApiBase = () => {
   const saved = localStorage.getItem('sand-config')
@@ -143,8 +144,8 @@ export default function Login() {
       <header className="bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/60">
         <div className="max-w-lg mx-auto px-6 h-16 flex items-center">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-sm font-bold text-white">
-              🛡
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+              <Shield size={18} className="text-white" />
             </div>
             <span className="text-lg font-semibold tracking-tight">SandGuard</span>
           </Link>
@@ -177,7 +178,7 @@ export default function Login() {
                 onClick={() => { setStep('free'); setError('') }}
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold text-base hover:opacity-90 transition-opacity"
               >
-                🚀 Start Free — No Payment Required
+                Start Free — No Payment Required
               </button>
               <p className="text-xs text-center text-slate-500 -mt-3">
                 1 Safe • Transaction decoding • 10 API calls/day
@@ -216,7 +217,7 @@ export default function Login() {
                 className="w-full py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-500/50 transition-all flex items-center justify-between px-5"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-lg">🎟️</span>
+                  <Ticket size={20} className="text-amber-400" />
                   <div className="text-left">
                     <p className="font-medium text-sm">Have a promo code?</p>
                     <p className="text-xs text-slate-500">Friends & Family access</p>
@@ -254,22 +255,22 @@ export default function Login() {
                 <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Scout Plan (Free)</p>
                 <ul className="text-sm text-slate-400 space-y-2">
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> 1 Safe monitored
+                    <Check className="w-3.5 h-3.5 text-emerald-400" /> 1 Safe monitored
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> Transaction decoding
+                    <Check className="w-3.5 h-3.5 text-emerald-400" /> Transaction decoding
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> 10 API calls/day
+                    <Check className="w-3.5 h-3.5 text-emerald-400" /> 10 API calls/day
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-slate-600 text-xs">✗</span> <span className="text-slate-600">Simulation</span>
+                    <X className="w-3.5 h-3.5 text-slate-600" /> <span className="text-slate-600">Simulation</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-slate-600 text-xs">✗</span> <span className="text-slate-600">Risk scoring</span>
+                    <X className="w-3.5 h-3.5 text-slate-600" /> <span className="text-slate-600">Risk scoring</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-slate-600 text-xs">✗</span> <span className="text-slate-600">Alerts</span>
+                    <X className="w-3.5 h-3.5 text-slate-600" /> <span className="text-slate-600">Alerts</span>
                   </li>
                 </ul>
               </div>

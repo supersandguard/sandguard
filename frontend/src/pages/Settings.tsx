@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Check } from 'lucide-react'
 import { testConnection } from '../api'
 
 interface Config {
@@ -190,7 +191,7 @@ export default function Settings() {
         onClick={handleSave}
         className="w-full py-3 rounded-xl bg-emerald-500/20 text-emerald-400 font-semibold text-sm border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors active:scale-95"
       >
-        {saved ? '✓ Saved' : 'Save & Reload'}
+        {saved ? <span className="inline-flex items-center gap-1"><Check className="w-4 h-4" /> Saved</span> : 'Save & Reload'}
       </button>
 
       {/* Info */}

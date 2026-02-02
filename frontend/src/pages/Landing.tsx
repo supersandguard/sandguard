@@ -1,23 +1,25 @@
 import { Link } from 'react-router-dom'
+import { Search, Zap, Shield, Bell, Check, X } from 'lucide-react'
+import type { ReactNode } from 'react'
 
-const features = [
+const features: { icon: ReactNode; title: string; desc: string }[] = [
   {
-    icon: '🔍',
+    icon: <Search size={24} className="text-emerald-400" />,
     title: 'Decode',
     desc: 'Automatically decode calldata into human-readable function calls. Identifies known protocols like Aave, Uniswap, and Morpho.',
   },
   {
-    icon: '⚡',
+    icon: <Zap size={24} className="text-cyan-400" />,
     title: 'Simulate',
     desc: 'Fork the chain and simulate every transaction before signing. See exact balance changes, gas costs, and state diffs.',
   },
   {
-    icon: '🛡️',
+    icon: <Shield size={24} className="text-emerald-400" />,
     title: 'Risk Score',
     desc: 'AI-powered risk analysis flags unlimited approvals, unverified contracts, and suspicious patterns before you sign.',
   },
   {
-    icon: '🔔',
+    icon: <Bell size={24} className="text-cyan-400" />,
     title: 'Push Alerts',
     desc: 'Get notified instantly when new transactions hit your queue. Never miss a pending signature via Clawdbot.',
   },
@@ -37,8 +39,8 @@ export default function Landing() {
       <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/60">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-sm font-bold text-white">
-              🛡
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+              <Shield size={18} className="text-white" />
             </div>
             <span className="text-lg font-semibold tracking-tight">SandGuard</span>
           </div>
@@ -103,7 +105,7 @@ export default function Landing() {
               key={f.title}
               className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800/60 hover:border-slate-700/60 transition-colors"
             >
-              <span className="text-3xl mb-4 block">{f.icon}</span>
+              <span className="mb-4 block">{f.icon}</span>
               <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
               <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
             </div>
@@ -143,22 +145,22 @@ export default function Landing() {
             <p className="text-sm text-slate-400 mb-6">No credit card required</p>
             <ul className="text-sm text-slate-400 space-y-3 mb-8 flex-1">
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> 1 Safe monitored
+                <Check className="w-4 h-4 text-emerald-400" /> 1 Safe monitored
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> Transaction decoding
+                <Check className="w-4 h-4 text-emerald-400" /> Transaction decoding
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> 10 API calls/day
+                <Check className="w-4 h-4 text-emerald-400" /> 10 API calls/day
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-slate-600">✗</span> <span className="text-slate-600">Simulation</span>
+                <X className="w-4 h-4 text-slate-600" /> <span className="text-slate-600">Simulation</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-slate-600">✗</span> <span className="text-slate-600">Risk scoring</span>
+                <X className="w-4 h-4 text-slate-600" /> <span className="text-slate-600">Risk scoring</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-slate-600">✗</span> <span className="text-slate-600">Alerts</span>
+                <X className="w-4 h-4 text-slate-600" /> <span className="text-slate-600">Alerts</span>
               </li>
             </ul>
             <Link
@@ -182,22 +184,22 @@ export default function Landing() {
             <p className="text-sm text-slate-400 mb-6">Pay with any crypto</p>
             <ul className="text-sm text-slate-400 space-y-3 mb-8 flex-1">
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> 5 Safes monitored
+                <Check className="w-4 h-4 text-emerald-400" /> 5 Safes monitored
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> Transaction decoding
+                <Check className="w-4 h-4 text-emerald-400" /> Transaction decoding
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> Simulation
+                <Check className="w-4 h-4 text-emerald-400" /> Simulation
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> AI risk scoring
+                <Check className="w-4 h-4 text-emerald-400" /> AI risk scoring
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> 1,000 API calls/day
+                <Check className="w-4 h-4 text-emerald-400" /> 1,000 API calls/day
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span> Push alerts via Clawdbot
+                <Check className="w-4 h-4 text-emerald-400" /> Push alerts via Clawdbot
               </li>
             </ul>
             <Link
@@ -231,7 +233,7 @@ export default function Landing() {
       <footer className="border-t border-slate-800/60 py-8">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-sm text-slate-500">
-            <span>🛡️</span>
+            <Shield size={16} className="text-slate-500" />
             <span>SandGuard</span>
             <span>·</span>
             <span>supersandguard.com</span>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { RefreshCw, ShieldCheck } from 'lucide-react'
 import { useTransactionsContext } from '../context/TransactionsContext'
 
 const CHAIN_NAMES: Record<number, string> = {
@@ -71,7 +72,7 @@ export default function Dashboard() {
             className="text-slate-500 hover:text-emerald-400 transition-colors disabled:opacity-40 p-1"
             title="Refresh"
           >
-            <span className={`text-lg ${refreshing ? 'animate-spin inline-block' : ''}`}>↻</span>
+            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
           </button>
         </div>
         {lastUpdated && (
@@ -120,7 +121,7 @@ export default function Dashboard() {
           </div>
         ) : pending.length === 0 ? (
           <div className="bg-slate-900/50 rounded-2xl border border-slate-800/50 py-12 px-6 text-center">
-            <p className="text-4xl mb-3">🛡️</p>
+            <ShieldCheck className="w-10 h-10 text-slate-600 mx-auto mb-3" />
             <p className="text-sm font-medium text-slate-300 mb-1">No pending transactions</p>
             <p className="text-xs text-slate-500">Your Safe is secure</p>
             {lastUpdated && (
