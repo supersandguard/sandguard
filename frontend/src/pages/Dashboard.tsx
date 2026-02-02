@@ -24,7 +24,7 @@ function formatTime(date: Date | null) {
 export default function Dashboard() {
   const {
     transactions, loading, refreshing, error,
-    lastUpdated, safeInfo, safeAddress, chainId, isDemo, refresh,
+    lastUpdated, safeInfo, safeAddress, chainId, isUnconfigured, refresh,
   } = useTransactionsContext()
   const pending = transactions.filter(t => !t.isExecuted)
 
@@ -37,7 +37,7 @@ export default function Dashboard() {
         <div className="flex items-start justify-between">
           <div>
             <p className="text-sm text-slate-400 uppercase tracking-wider mb-1">Safe Multisig</p>
-            {isDemo ? (
+            {isUnconfigured ? (
               <p className="font-mono text-sm text-slate-300">No Safe configured — add one in Settings</p>
             ) : (
               <p className="font-mono text-sm text-slate-300">{shortenAddress(safeAddress)}</p>
@@ -55,7 +55,7 @@ export default function Dashboard() {
                     v{safeInfo.version}
                   </span>
                 </>
-              ) : !isDemo ? (
+              ) : !isUnconfigured ? (
                 <>
                   <span className="text-xs bg-slate-700 text-slate-400 px-2 py-0.5 rounded-full animate-pulse">
                     Loading...
@@ -124,7 +124,7 @@ export default function Dashboard() {
           </div>
         ) : pending.length === 0 ? (
           <div className="bg-slate-900/50 rounded-2xl border border-slate-800/50 py-12 px-6 text-center">
-            {isDemo || safeAddress ? (
+            {isUnconfigured || safeAddress ? (
               <>
                 <ShieldCheck className="w-10 h-10 text-slate-600 mx-auto mb-3" />
                 <p className="text-sm font-medium text-slate-300 mb-1">No pending transactions</p>

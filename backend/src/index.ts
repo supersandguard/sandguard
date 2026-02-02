@@ -28,10 +28,20 @@ app.use(compression());
 // Security headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
+  // Allow iframe embedding (needed for Safe App Store) — no X-Frame-Options: DENY
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  // Content Security Policy — allow self, inline styles (Tailwind), Google Fonts, Safe App iframe embedding
+  res.setHeader('Content-Security-Policy', [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https:",
+    "connect-src 'self' https://supersandguard.com https://*.safe.global https://*.tenderly.co https://*.etherscan.io",
+    "frame-ancestors 'self' https://app.safe.global https://*.safe.global",
+  ].join('; '));
   if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   }
@@ -53,6 +63,7 @@ app.use(cors({
     'https://www.supersandguard.com',
     // 'https://sandguard.netlify.app', // deprecated
     'https://web-production-9722f.up.railway.app',
+    'https://app.safe.global',       // Safe App Store iframe
     'http://localhost:5173',
     'http://localhost:3000',
   ],
