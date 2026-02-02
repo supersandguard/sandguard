@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 
 import safeRouter from './routes/safe';
@@ -16,8 +17,26 @@ import daimoWebhookRouter from './routes/daimo-webhook';
 dotenv.config();
 
 const app = express();
+app.disable('x-powered-by');
 
-app.use(cors());
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30, // 30 requests per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+app.use(limiter);
+
+app.use(cors({
+  origin: [
+    'https://sandguard.netlify.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes
