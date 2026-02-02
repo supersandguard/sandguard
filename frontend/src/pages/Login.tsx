@@ -1,8 +1,9 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { PrerequisiteCheclistCompact } from '../components/PrerequisiteChecklist'
 const DaimoPayButton = lazy(() => import('@daimo/pay').then(m => ({ default: m.DaimoPayButton })))
-import { Shield, Check, X, Ticket } from 'lucide-react'
+import { Shield, Check, X, Ticket, Info, ExternalLink, AlertCircle } from 'lucide-react'
 
 const getApiBase = () => {
   const saved = localStorage.getItem('sand-config')
@@ -238,26 +239,70 @@ export default function Login() {
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Start Free</h1>
-                <p className="text-sm text-slate-400">Enter your Safe owner wallet address</p>
+                <p className="text-sm text-slate-400">
+                  Enter your Safe multisig address to get started
+                </p>
               </div>
               <form onSubmit={handleFreeSignup} className="space-y-4">
                 <div>
-                  <label className="text-xs text-slate-500 block mb-1.5">Wallet Address</label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs text-slate-500">Safe Address</label>
+                    <div className="group relative">
+                      <Info size={14} className="text-slate-600 hover:text-slate-400 cursor-help" />
+                      <div className="absolute right-0 bottom-6 w-56 bg-slate-800 border border-slate-700 rounded-lg p-3 text-xs text-slate-400 leading-relaxed invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all z-50 shadow-xl">
+                        A Safe address starts with <span className="font-mono text-emerald-400">0x</span> followed by 40 hex characters. Find it in your Safe dashboard at app.safe.global.
+                      </div>
+                    </div>
+                  </div>
                   <input
                     type="text" value={freeAddress}
                     onChange={(e) => setFreeAddress(e.target.value)}
                     placeholder="0x..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none focus:border-emerald-500 placeholder:text-slate-600 text-center"
+                    className={`w-full bg-slate-900 border rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none placeholder:text-slate-600 text-center transition-colors ${
+                      freeAddress.trim() && !/^0x[a-fA-F0-9]{40}$/.test(freeAddress.trim())
+                        ? 'border-red-500/50 focus:border-red-500'
+                        : freeAddress.trim() && /^0x[a-fA-F0-9]{40}$/.test(freeAddress.trim())
+                        ? 'border-emerald-500/50 focus:border-emerald-500'
+                        : 'border-slate-800 focus:border-emerald-500'
+                    }`}
                   />
+                  {freeAddress.trim() && !/^0x[a-fA-F0-9]{40}$/.test(freeAddress.trim()) && (
+                    <p className="flex items-center gap-1 text-xs text-red-400 mt-1.5">
+                      <AlertCircle size={12} />
+                      Enter a valid Ethereum address (0x + 40 hex characters)
+                    </p>
+                  )}
+                  {freeAddress.trim() && /^0x[a-fA-F0-9]{40}$/.test(freeAddress.trim()) && (
+                    <p className="flex items-center gap-1 text-xs text-emerald-400 mt-1.5">
+                      <Check size={12} />
+                      We'll monitor all pending transactions on this Safe
+                    </p>
+                  )}
+                  <p className="text-xs text-slate-600 mt-1.5">
+                    Don't have a Safe?{' '}
+                    <a
+                      href="https://app.safe.global/new-safe/create"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-400 hover:text-emerald-300 transition-colors"
+                    >
+                      Create one free
+                      <ExternalLink size={10} className="inline ml-0.5 -mt-0.5" />
+                    </a>
+                  </p>
                 </div>
-                <button type="submit" disabled={verifying || !freeAddress.trim()}
+                <button type="submit" disabled={verifying || !freeAddress.trim() || (freeAddress.trim().length > 2 && !/^0x[a-fA-F0-9]{40}$/.test(freeAddress.trim()))}
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {verifying ? 'Creating...' : 'Create Free Account'}
                 </button>
               </form>
+
+              {/* Prerequisites */}
+              <PrerequisiteCheclistCompact />
+
               <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800/60">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Scout Plan (Free)</p>
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3 font-semibold">Scout Plan (Free)</p>
                 <ul className="text-sm text-slate-400 space-y-2">
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" /> 1 Safe monitored

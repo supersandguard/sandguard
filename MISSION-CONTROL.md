@@ -63,7 +63,11 @@
 ## 📊 Activity Feed
 
 ```
-00:00 — Deploy #4 triggered — removed nixpacks.toml (possible config clash with railway.json)
+00:30 — Deploy #5 — ROOT CAUSE FOUND: nixpacks ignoring railway.json installCommand, doing `npm i` in root (no vite). Fixed nixpacks.toml with correct per-dir install
+00:25 — onboarding-ux COMPLETED — PrerequisiteChecklist, Safe explanation, Landing redesign
+00:22 — founders-program + referral-program launched
+00:14 — safe-integration COMPLETED — 58KB strategy doc
+00:00 — Deploy #4 failed — removing nixpacks.toml made it worse (12 consecutive FAILED deploys)
 23:55 — Deploy #3 triggered (detach) — still not reflecting
 23:48 — Deploy #2 triggered — all 6 agents done, waiting for Railway build
 23:38 — Deploy #1 triggered but missed late commits
@@ -134,6 +138,9 @@
 3. **Railway doesn't auto-deploy on git push** unless connected to GitHub. Fix: manual `railway up` or fix GitHub integration.
 4. **Frontend builds are heavy** (~200MB deps). Pi can't build locally. All builds must happen on Railway.
 5. **Always check if a deploy actually happened** — verify bundle hash changed.
+6. **NEVER remove nixpacks.toml** — Railway needs it for correct install paths. railway.json installCommand gets IGNORED by Nixpacks.
+7. **Use `railway deployment list`** to check build status — don't assume builds succeed.
+8. **Use `railway logs --build <id>`** to see build errors.
 
 ---
 

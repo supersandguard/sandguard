@@ -138,6 +138,138 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Getting Started — What You Need */}
+      <section className="max-w-5xl mx-auto px-6 py-20">
+        <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+          Getting Started
+        </h2>
+        <p className="text-center text-slate-400 text-base max-w-xl mx-auto mb-14">
+          SandGuard works with Safe multisig wallets. Here's what you need to get up and running.
+        </p>
+
+        {/* 3-step cards */}
+        <div className="grid md:grid-cols-3 gap-6 mb-14">
+          {/* Step 1 */}
+          <div className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800/60 hover:border-emerald-500/30 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center mb-5">
+              <Shield size={20} className="text-emerald-400" />
+            </div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-bold text-emerald-400/60 uppercase tracking-wider">Step 1</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Create a Safe</h3>
+            <p className="text-sm text-slate-400 leading-relaxed mb-4">
+              A Safe is a smart contract wallet that requires multiple approvals for every transaction.
+              Think of it as a bank vault that needs 2 of 3 keys to open.
+            </p>
+            <a
+              href="https://app.safe.global/new-safe/create"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+            >
+              Create a Safe on app.safe.global
+              <ExternalLink size={14} />
+            </a>
+          </div>
+
+          {/* Step 2 */}
+          <div className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800/60 hover:border-cyan-500/30 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/15 flex items-center justify-center mb-5">
+              <Users size={20} className="text-cyan-400" />
+            </div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-bold text-cyan-400/60 uppercase tracking-wider">Step 2</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Add Your Signers</h3>
+            <p className="text-sm text-slate-400 leading-relaxed mb-4">
+              Each signer can use MetaMask, Ledger, Trezor, or any Ethereum-compatible wallet.
+              Hardware wallets recommended for maximum security.
+            </p>
+            <div className="flex items-center gap-3 text-xs text-slate-500">
+              <span className="px-2 py-1 rounded bg-slate-800 border border-slate-700/60">MetaMask</span>
+              <span className="px-2 py-1 rounded bg-slate-800 border border-slate-700/60">Ledger</span>
+              <span className="px-2 py-1 rounded bg-slate-800 border border-slate-700/60">Trezor</span>
+              <span className="px-2 py-1 rounded bg-slate-800 border border-slate-700/60">Rabby</span>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800/60 hover:border-emerald-500/30 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center mb-5">
+              <Key size={20} className="text-emerald-400" />
+            </div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-bold text-emerald-400/60 uppercase tracking-wider">Step 3</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Connect to SandGuard</h3>
+            <p className="text-sm text-slate-400 leading-relaxed mb-4">
+              Paste your Safe address and SandGuard monitors every transaction before you sign.
+              Decode calldata, simulate outcomes, and get risk scores automatically.
+            </p>
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+            >
+              Get started now
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+
+        {/* Full Prerequisites Checklist */}
+        <div className="max-w-xl mx-auto">
+          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 text-center">
+            Full prerequisites checklist
+          </h3>
+          <PrerequisiteChecklist />
+        </div>
+      </section>
+
+      {/* Built for Safe */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <div className="bg-slate-900/50 rounded-2xl border border-slate-800/60 p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+          {/* Safe Logo */}
+          <div className="flex-shrink-0">
+            <svg width="64" height="64" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="512" height="512" rx="76" fill="#12FF80" fillOpacity="0.15" />
+              <path d="M374.7 201.2H355.4V158.5C355.4 104 311.4 60 256.9 60H256C201.5 60 157.5 104 157.5 158.5V201.2H137.3C121.2 201.2 108.2 214.2 108.2 230.3V393.9C108.2 410 121.2 423 137.3 423H374.7C390.8 423 403.8 410 403.8 393.9V230.3C403.8 214.2 390.8 201.2 374.7 201.2ZM273.9 343.6V370.3C273.9 380.2 265.8 388.3 255.9 388.3C246 388.3 237.9 380.2 237.9 370.3V343.6C228.4 337 222.3 326.1 222.3 313.7C222.3 293.2 238.9 276.6 259.4 276.6C279.9 276.6 296.5 293.2 296.5 313.7C296.5 326.1 290.4 337 280.9 343.6H273.9ZM315.4 201.2H196.6V158.5C196.6 125.7 223.2 99.1 256 99.1C288.8 99.1 315.4 125.7 315.4 158.5V201.2Z" fill="#12FF80" />
+            </svg>
+          </div>
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="text-xl font-bold mb-2">
+              Built for{' '}
+              <span className="text-[#12FF80]">Safe</span>
+              <span className="text-slate-500">{'{Wallet}'}</span>
+            </h3>
+            <p className="text-sm text-slate-400 leading-relaxed mb-4 max-w-lg">
+              SandGuard integrates with Safe — the most trusted smart wallet infrastructure, securing over $100B+ in onchain assets.
+              Used by Ethereum Foundation, Worldcoin, Vitalik Buterin, and thousands of DAOs worldwide.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <a
+                href="https://app.safe.global/new-safe/create"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#12FF80]/10 text-[#12FF80] text-sm font-medium border border-[#12FF80]/20 hover:bg-[#12FF80]/20 transition-colors"
+              >
+                Create a Safe
+                <ExternalLink size={14} />
+              </a>
+              <a
+                href="https://safe.global"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-300 transition-colors"
+              >
+                Learn about Safe
+                <ArrowRight size={14} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-12">
@@ -246,7 +378,20 @@ export default function Landing() {
             <span>·</span>
             <span>supersandguard.com</span>
           </div>
-          <p className="text-xs text-slate-600">© {new Date().getFullYear()} SandGuard. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://safe.global"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-slate-400 transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M374.7 201.2H355.4V158.5C355.4 104 311.4 60 256.9 60H256C201.5 60 157.5 104 157.5 158.5V201.2H137.3C121.2 201.2 108.2 214.2 108.2 230.3V393.9C108.2 410 121.2 423 137.3 423H374.7C390.8 423 403.8 410 403.8 393.9V230.3C403.8 214.2 390.8 201.2 374.7 201.2ZM273.9 343.6V370.3C273.9 380.2 265.8 388.3 255.9 388.3C246 388.3 237.9 380.2 237.9 370.3V343.6C228.4 337 222.3 326.1 222.3 313.7C222.3 293.2 238.9 276.6 259.4 276.6C279.9 276.6 296.5 293.2 296.5 313.7C296.5 326.1 290.4 337 280.9 343.6H273.9ZM315.4 201.2H196.6V158.5C196.6 125.7 223.2 99.1 256 99.1C288.8 99.1 315.4 125.7 315.4 158.5V201.2Z" fill="currentColor" />
+              </svg>
+              Powered by Safe
+            </a>
+            <p className="text-xs text-slate-600">{new Date().getFullYear()} SandGuard</p>
+          </div>
         </div>
       </footer>
     </div>
