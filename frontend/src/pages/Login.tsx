@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { DaimoPayButton } from '@daimo/pay'
+const DaimoPayButton = lazy(() => import('@daimo/pay').then(m => ({ default: m.DaimoPayButton })))
 import { Shield, Check, X, Ticket } from 'lucide-react'
 
 const getApiBase = () => {
@@ -196,15 +196,17 @@ export default function Login() {
                       <p className="text-xs text-slate-500">5 Safes • All features • 1000 calls/day</p>
                     </div>
                   </div>
-                  <DaimoPayButton
-                    appId="pay-demo"
-                    toAddress={PAYMENT_ADDRESS as `0x${string}`}
-                    toChain={BASE_CHAIN_ID}
-                    toToken={USDC_BASE as `0x${string}`}
-                    toUnits="20.00"
-                    intent="Subscribe to SandGuard Pro"
-                    onPaymentCompleted={handlePaymentCompleted}
-                  />
+                  <Suspense fallback={<div className="text-center py-3 text-sm text-slate-500">Loading payment...</div>}>
+                    <DaimoPayButton
+                      appId="pay-demo"
+                      toAddress={PAYMENT_ADDRESS as `0x${string}`}
+                      toChain={BASE_CHAIN_ID}
+                      toToken={USDC_BASE as `0x${string}`}
+                      toUnits="20.00"
+                      intent="Subscribe to SandGuard Pro"
+                      onPaymentCompleted={handlePaymentCompleted}
+                    />
+                  </Suspense>
                   <p className="text-xs text-center text-slate-600">
                     Pay with 1200+ tokens on 20+ chains
                   </p>

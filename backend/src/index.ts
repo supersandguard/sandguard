@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
@@ -21,6 +22,7 @@ dotenv.config();
 
 const app = express();
 app.disable('x-powered-by');
+app.use(compression());
 
 // Rate limiting (apply only to API routes)
 const apiLimiter = rateLimit({
@@ -42,7 +44,7 @@ app.use(cors({
   ],
   credentials: true,
 }));
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
 // Apply rate limiting only to API routes
 app.use('/api', apiLimiter);
