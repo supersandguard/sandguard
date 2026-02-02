@@ -16,7 +16,9 @@
 ### 🔴 In Progress
 | Task | Status | ETA |
 |------|--------|-----|
-| Deploy #2 to Railway | 🔄 Building | ~5 min |
+| x-marketing | 🔄 Running | — |
+| moltbook-marketing | 🔄 Running | — |
+| Blog deploy (needs GitHub Pages enabled) | ⚠️ Manual | — |
 
 ### ✅ Done (Overnight Sprint)
 | Task | Agent | Output | Tokens |
@@ -63,7 +65,11 @@
 ## 📊 Activity Feed
 
 ```
-00:30 — Deploy #5 — ROOT CAUSE FOUND: nixpacks ignoring railway.json installCommand, doing `npm i` in root (no vite). Fixed nixpacks.toml with correct per-dir install
+00:45 — ✅ DEPLOY SUCCESS (607bafe9) — new bundle, lang="en", security headers, OG tags, robots.txt, spinner, API 404. Compression still not working (investigate).
+00:40 — blog-and-safe COMPLETED — 2 blog posts + Safe forum draft
+00:38 — founders-program COMPLETED — 55KB doc, soulbound NFT, lifetime Pro, $UMBRA allocation
+00:35 — Deploy #6 — REAL root causes: 1) lucide-react missing from package.json 2) Railway npm runs production mode (skips devDeps including vite). Fixed both.
+00:30 — Deploy #5 failed — nixpacks install ran correctly but production mode skipped vite
 00:25 — onboarding-ux COMPLETED — PrerequisiteChecklist, Safe explanation, Landing redesign
 00:22 — founders-program + referral-program launched
 00:14 — safe-integration COMPLETED — 58KB strategy doc
