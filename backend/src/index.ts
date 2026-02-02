@@ -32,6 +32,7 @@ app.use(limiter);
 app.use(cors({
   origin: [
     'https://sandguard.netlify.app',
+    'https://web-production-9722f.up.railway.app',
     'http://localhost:5173',
     'http://localhost:3000',
   ],
