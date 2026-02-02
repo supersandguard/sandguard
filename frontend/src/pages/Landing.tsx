@@ -114,6 +114,82 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Analogy — Why You Need This */}
+      <section className="max-w-5xl mx-auto px-6 py-16 md:py-24">
+        <h2 className="text-center text-2xl md:text-3xl font-bold mb-4">
+          Imagine a bank vault with{' '}
+          <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+            three keys
+          </span>
+        </h2>
+        <p className="text-center text-base md:text-lg text-slate-400 max-w-2xl mx-auto mb-14">
+          A Safe multisig is like a shared vault. No single person can open it alone —
+          you need multiple keyholders to approve. Sounds secure, right?
+          There's a catch.
+        </p>
+
+        {/* 3-step visual analogy */}
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-14">
+          {/* Step 1: The vault */}
+          <div className="relative bg-slate-900/60 rounded-2xl p-6 md:p-8 border border-slate-800/60 text-center">
+            <div className="text-5xl mb-5">🔐</div>
+            <h3 className="text-lg md:text-xl font-bold mb-3 text-slate-100">
+              The Vault
+            </h3>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+              Your crypto lives in a <strong className="text-slate-200">Safe wallet</strong> — a vault that needs
+              multiple keys (signers) to open.{' '}
+              <span className="text-emerald-400">3 people must agree</span> before any money moves.
+            </p>
+          </div>
+
+          {/* Step 2: Blind signing */}
+          <div className="relative bg-slate-900/60 rounded-2xl p-6 md:p-8 border border-red-500/20 text-center">
+            <div className="text-5xl mb-5">🙈</div>
+            <h3 className="text-lg md:text-xl font-bold mb-3 text-slate-100">
+              The Problem
+            </h3>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+              Someone slides a paper under the door. It says <em className="text-slate-300">"routine transfer."</em>{' '}
+              All 3 keyholders sign it — <strong className="text-red-400">without reading the actual contract.</strong>{' '}
+              This is called <strong className="text-slate-200">blind signing.</strong>
+            </p>
+          </div>
+
+          {/* Step 3: SandGuard */}
+          <div className="relative bg-slate-900/60 rounded-2xl p-6 md:p-8 border border-emerald-500/30 text-center">
+            <div className="text-5xl mb-5">🛡️</div>
+            <h3 className="text-lg md:text-xl font-bold mb-3 text-slate-100">
+              The Fix
+            </h3>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+              SandGuard <strong className="text-emerald-400">reads</strong> the actual document,{' '}
+              <strong className="text-emerald-400">simulates</strong> what would happen, and{' '}
+              <strong className="text-emerald-400">warns you</strong> if something's wrong.
+              Like a lawyer who reviews every contract before you sign.
+            </p>
+          </div>
+        </div>
+
+        {/* Real-world callout — ByBit */}
+        <div className="max-w-2xl mx-auto bg-red-500/5 rounded-xl border border-red-500/20 p-5 md:p-6">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl flex-shrink-0 mt-0.5">⚠️</span>
+            <div>
+              <p className="text-sm md:text-base text-slate-300 font-medium mb-1">
+                This isn't hypothetical.
+              </p>
+              <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+                In the <strong className="text-slate-200">ByBit hack</strong>, the paper said "transfer funds" — but the actual
+                contract said <em className="text-red-400">"give everything to the attacker."</em>{' '}
+                All signers approved because they trusted the summary, not the code.
+                SandGuard would have caught this.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-center text-lg md:text-xl font-bold text-slate-300 uppercase tracking-wider mb-12">
