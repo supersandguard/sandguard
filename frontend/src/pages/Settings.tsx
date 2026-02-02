@@ -151,7 +151,7 @@ export default function Settings() {
           )}
           {!config.address && (
             <p className="text-sm text-slate-500 mt-1">
-              Leave empty for demo mode.{' '}
+              Optional: connect your Safe wallet address.{' '}
               <a
                 href="https://app.safe.global/new-safe/create"
                 target="_blank"
@@ -275,7 +275,7 @@ export default function Settings() {
         <div className="space-y-1 text-sm text-slate-500">
           <p>SandGuard v0.2 — Transaction Firewall PWA</p>
           <p>Backend: {import.meta.env.VITE_API_URL || '/api (relative)'}</p>
-          <p>Mode: {config.address ? 'Live' : 'Demo (mock data)'}</p>
+          <p>Mode: {config.address ? 'Connected' : 'Not configured'}</p>
         </div>
       </div>
     </div>

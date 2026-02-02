@@ -38,7 +38,7 @@ export default function Dashboard() {
           <div>
             <p className="text-sm text-slate-400 uppercase tracking-wider mb-1">Safe Multisig</p>
             {isDemo ? (
-              <p className="font-mono text-sm text-slate-300">Demo Mode (mock data)</p>
+              <p className="font-mono text-sm text-slate-300">No Safe configured — add one in Settings</p>
             ) : (
               <p className="font-mono text-sm text-slate-300">{shortenAddress(safeAddress)}</p>
             )}
@@ -64,7 +64,7 @@ export default function Dashboard() {
               ) : (
                 <>
                   <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">2-of-3</span>
-                  <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">Demo</span>
+                  <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">Setup needed</span>
                 </>
               )}
             </div>

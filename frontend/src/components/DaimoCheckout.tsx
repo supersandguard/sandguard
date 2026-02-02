@@ -13,7 +13,7 @@ export default function DaimoCheckout({ onPaymentCompleted }: DaimoCheckoutProps
   return (
     <DaimoProvider>
       <DaimoPayButton
-        appId="pay-demo"
+        appId="sandguard"
         toAddress={PAYMENT_ADDRESS as `0x${string}`}
         toChain={BASE_CHAIN_ID}
         toToken={USDC_BASE as `0x${string}`}
