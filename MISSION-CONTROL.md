@@ -52,6 +52,13 @@
 ## 📊 Activity Feed
 
 ```
+23:38 — DEPLOY triggered (railway up) — all wave 1 commits included
+23:37 — ux-quickwins COMPLETED (73ec733) — demo routing, badge, empty states, page titles
+23:36 — github-setup COMPLETED — repo PUBLIC at github.com/supersandguard/sandguard
+23:36 — security-fix COMPLETED (8331a57) — headers, sanitize, API 404, address validation
+23:35 — seo-meta COMPLETED (e87e0ea) — OG tags, meta, robots.txt, icon SVG, spinner
+23:35 — performance-fix COMPLETED (57b27d8) — compression + payload limit + code-split
+23:33 — Oleada nocturna: 6 agentes lanzados + cron/30min
 22:40 — Relaunched: emoji-audit-v2, ux-audit-v2, railway-deploy
 22:37 — Created MISSION-CONTROL.md
 22:33 — Alberto: "Dame reporte de todos los agentes"
