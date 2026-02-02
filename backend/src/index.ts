@@ -33,6 +33,8 @@ const apiLimiter = rateLimit({
 
 app.use(cors({
   origin: [
+    'https://supersandguard.com',
+    'https://www.supersandguard.com',
     'https://sandguard.netlify.app',
     'https://web-production-9722f.up.railway.app',
     'http://localhost:5173',
