@@ -17,6 +17,7 @@ import paymentsRouter from './routes/payments';
 import stripeRouter from './routes/stripe';
 import promoRouter from './routes/promo';
 import daimoWebhookRouter from './routes/daimo-webhook';
+import foundersRouter from './routes/founders';
 
 dotenv.config();
 
@@ -50,7 +51,7 @@ app.use(cors({
   origin: [
     'https://supersandguard.com',
     'https://www.supersandguard.com',
-    'https://sandguard.netlify.app',
+    // 'https://sandguard.netlify.app', // deprecated
     'https://web-production-9722f.up.railway.app',
     'http://localhost:5173',
     'http://localhost:3000',
@@ -73,6 +74,7 @@ app.use('/api/payments', paymentsRouter);
 app.use('/api/stripe', stripeRouter);
 app.use('/api/promo', promoRouter);
 app.use('/api/webhooks', daimoWebhookRouter);
+app.use('/api/founders', foundersRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => {
@@ -94,8 +96,16 @@ const frontendDistPath = path.resolve(__dirname, '..', 'frontend-dist');
 
 if (fs.existsSync(frontendDistPath)) {
   console.log(`📦 Serving frontend from: ${frontendDistPath}`);
-  // Serve static assets
-  app.use(express.static(frontendDistPath, { maxAge: '1d' }));
+  // Serve static assets with smart caching
+  app.use(express.static(frontendDistPath, {
+    maxAge: '1d',
+    setHeaders: (res, filePath) => {
+      // Hashed assets (in /assets/) are immutable — cache for 1 year
+      if (filePath.includes('/assets/')) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      }
+    },
+  }));
 
   // SPA fallback: serve index.html for any non-API route
   app.get('*', (_req, res) => {

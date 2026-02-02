@@ -29,6 +29,7 @@ router.get('/info', (_req: Request, res: Response) => {
     tiers: {
       scout: { price: 0, name: 'Scout (Free)' },
       pro: { price: 20, name: 'Pro' },
+      founder: { price: 0, name: 'Founder (Lifetime)', note: 'Earned through the Founders Program — not purchasable directly' },
     },
     instructions: `Send $${MONTHLY_PRICE_USD} worth of ETH to ${PAYMENT_WALLET} on Base for Pro plan. Or start free at POST /api/payments/free.`
   })
@@ -274,7 +275,7 @@ router.post('/activate', async (req: Request, res: Response) => {
 
 // ─── MIDDLEWARE ──────────────────────────────────────────────────────────────
 
-const PLAN_HIERARCHY: Record<string, number> = { scout: 0, pro: 1 }
+const PLAN_HIERARCHY: Record<string, number> = { scout: 0, pro: 1, founder: 2 }
 
 /**
  * Track API usage and enforce plan-based daily rate limits.
