@@ -17,14 +17,14 @@ export default function TxQueue() {
   return (
     <div className="px-4 py-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+        <h2 className="text-base font-bold text-slate-300 uppercase tracking-wider">
           Transaction Queue ({transactions.length})
           {refreshing && <span className="text-emerald-400 animate-pulse ml-1">⟳</span>}
         </h2>
         <button
           onClick={refresh}
           disabled={loading || refreshing}
-          className="text-xs text-emerald-400 hover:underline disabled:opacity-50"
+          className="text-sm text-emerald-400 hover:underline disabled:opacity-50"
         >
           <span className="inline-flex items-center gap-1">{loading ? <><RefreshCw className="w-3 h-3 animate-spin" /> Loading...</> : <><RefreshCw className="w-3 h-3" /> Refresh</>}</span>
         </button>

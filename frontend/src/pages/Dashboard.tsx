@@ -36,7 +36,7 @@ export default function Dashboard() {
       <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Safe Multisig</p>
+            <p className="text-sm text-slate-400 uppercase tracking-wider mb-1">Safe Multisig</p>
             {isDemo ? (
               <p className="font-mono text-sm text-slate-300">Demo Mode (mock data)</p>
             ) : (
@@ -90,15 +90,15 @@ export default function Dashboard() {
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 text-center">
           <p className="text-2xl font-bold text-emerald-400">{pending.filter(t => t.risk?.score === 'green').length}</p>
-          <p className="text-xs text-slate-500 mt-1">🟢 Safe</p>
+          <p className="text-sm text-slate-400 mt-1">🟢 Safe</p>
         </div>
         <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 text-center">
           <p className="text-2xl font-bold text-amber-400">{pending.filter(t => t.risk?.score === 'yellow').length}</p>
-          <p className="text-xs text-slate-500 mt-1">🟡 Caution</p>
+          <p className="text-sm text-slate-400 mt-1">🟡 Caution</p>
         </div>
         <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 text-center">
           <p className="text-2xl font-bold text-red-400">{pending.filter(t => t.risk?.score === 'red').length}</p>
-          <p className="text-xs text-slate-500 mt-1">🔴 Danger</p>
+          <p className="text-sm text-slate-400 mt-1">🔴 Danger</p>
         </div>
       </div>
 
@@ -112,10 +112,10 @@ export default function Dashboard() {
       {/* Pending */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+          <h2 className="text-base font-semibold text-slate-300 uppercase tracking-wider">
             Pending {loading && <span className="text-emerald-400 animate-pulse">⟳</span>}
           </h2>
-          <Link to="/app/queue" className="text-xs text-emerald-400 hover:underline">View all →</Link>
+          <Link to="/app/queue" className="text-sm text-emerald-400 hover:underline">View all →</Link>
         </div>
         {loading && pending.length === 0 ? (
           <div className="text-center py-12">

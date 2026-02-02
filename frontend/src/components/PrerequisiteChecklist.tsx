@@ -58,30 +58,30 @@ export default function PrerequisiteChecklist() {
           <div className="flex-shrink-0 mt-0.5">{item.icon}</div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h4 className="text-sm font-semibold text-slate-200">{item.title}</h4>
+              <h4 className="text-base font-semibold text-slate-200">{item.title}</h4>
               {item.status === 'done' && (
-                <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400">
+                <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">
                   Ready
                 </span>
               )}
               {item.status === 'recommended' && (
-                <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400">
+                <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-400">
                   Recommended
                 </span>
               )}
               {item.status === 'required' && (
-                <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400">
+                <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400">
                   Required
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
+            <p className="text-sm text-slate-400 leading-relaxed">{item.description}</p>
             {item.link && (
               <a
                 href={item.link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 mt-2 text-xs font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
               >
                 {item.link.text}
                 <ExternalLink size={12} />
@@ -98,13 +98,13 @@ export default function PrerequisiteChecklist() {
 export function PrerequisiteCheclistCompact() {
   return (
     <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800/60">
-      <p className="text-xs text-slate-500 uppercase tracking-wider mb-3 font-semibold">
+      <p className="text-sm text-slate-400 uppercase tracking-wider mb-3 font-semibold">
         What you need
       </p>
       <ul className="space-y-2.5">
         <li className="flex items-start gap-2.5">
-          <Shield size={14} className="text-emerald-400 mt-0.5 flex-shrink-0" />
-          <span className="text-xs text-slate-400 leading-relaxed">
+          <Shield size={16} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+          <span className="text-sm text-slate-400 leading-relaxed">
             A{' '}
             <a
               href="https://app.safe.global/new-safe/create"
@@ -118,14 +118,14 @@ export function PrerequisiteCheclistCompact() {
           </span>
         </li>
         <li className="flex items-start gap-2.5">
-          <Users size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-          <span className="text-xs text-slate-400 leading-relaxed">
+          <Users size={16} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+          <span className="text-sm text-slate-400 leading-relaxed">
             Each signer with their own wallet (MetaMask, Ledger, Rabby, etc.)
           </span>
         </li>
         <li className="flex items-start gap-2.5">
-          <Fuel size={14} className="text-violet-400 mt-0.5 flex-shrink-0" />
-          <span className="text-xs text-slate-400 leading-relaxed">
+          <Fuel size={16} className="text-violet-400 mt-0.5 flex-shrink-0" />
+          <span className="text-sm text-slate-400 leading-relaxed">
             ETH for gas on your Safe's network
           </span>
         </li>
@@ -135,7 +135,7 @@ export function PrerequisiteCheclistCompact() {
           href="https://safe.global"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-400 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-400 transition-colors"
         >
           New to Safe? Learn more
           <ArrowRight size={12} />

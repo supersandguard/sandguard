@@ -45,7 +45,7 @@ export default function TxDetail() {
       {/* Explanation */}
       {tx.explanation && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> Explanation</h3>
+          <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><FileText className="w-4 h-4" /> Explanation</h3>
           <ul className="space-y-2">
             {tx.explanation.details.map((d, i) => (
               <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
@@ -69,7 +69,7 @@ export default function TxDetail() {
       {/* Balance Changes */}
       {tx.simulation && tx.simulation.balanceChanges.length > 0 && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Coins className="w-3.5 h-3.5" /> Balance Changes</h3>
+          <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Coins className="w-4 h-4" /> Balance Changes</h3>
           <div className="space-y-2">
             {tx.simulation.balanceChanges.map((bc, i) => (
               <BalanceChangeCard key={i} change={bc} />
@@ -81,7 +81,7 @@ export default function TxDetail() {
       {/* Decoded */}
       {tx.decoded && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Search className="w-3.5 h-3.5" /> Decoded Data</h3>
+          <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Search className="w-4 h-4" /> Decoded Data</h3>
           <div className="space-y-3">
             <div>
               <p className="text-xs text-slate-500">Function</p>
@@ -112,7 +112,7 @@ export default function TxDetail() {
       {/* Risk Details */}
       {tx.risk && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5" /> Risk Analysis</h3>
+          <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Risk Analysis</h3>
           <div className="space-y-2">
             {tx.risk.reasons.map((r, i) => (
               <div key={i} className={`flex items-start gap-2 text-sm ${
@@ -129,7 +129,7 @@ export default function TxDetail() {
       {/* Simulation */}
       {tx.simulation && (
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Fuel className="w-3.5 h-3.5" /> Simulation</h3>
+          <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Fuel className="w-4 h-4" /> Simulation</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-xs text-slate-500">Status</p>
@@ -145,8 +145,8 @@ export default function TxDetail() {
 
       {/* Raw Data */}
       <details className="bg-slate-900 rounded-2xl border border-slate-800">
-        <summary className="p-5 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-slate-300">
-          <span className="inline-flex items-center gap-1.5"><Package className="w-3.5 h-3.5" /> Raw Data</span>
+        <summary className="p-5 text-sm font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-slate-300">
+          <span className="inline-flex items-center gap-1.5"><Package className="w-4 h-4" /> Raw Data</span>
         </summary>
         <div className="px-5 pb-5 space-y-2">
           <div>

@@ -184,7 +184,7 @@ export default function Login() {
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Get Started</h1>
-                <p className="text-sm text-slate-400">
+                <p className="text-base text-slate-400">
                   Protect your Safe multisig — start for free in 30 seconds
                 </p>
               </div>
@@ -196,26 +196,26 @@ export default function Login() {
               >
                 Start Free — No Payment Required
               </button>
-              <p className="text-xs text-center text-slate-500 -mt-3">
+              <p className="text-sm text-center text-slate-500 -mt-3">
                 1 Safe • Transaction decoding • 10 API calls/day
               </p>
 
               {/* Go Pro with Daimo */}
               <div className="relative">
-                <div className="absolute -top-2 right-3 px-2 py-0.5 bg-cyan-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider z-10">
+                <div className="absolute -top-2 right-3 px-2.5 py-0.5 bg-cyan-500 text-white text-xs font-bold rounded-full uppercase tracking-wider z-10">
                   Most Popular
                 </div>
                 <div className="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-sm">Go Pro — $20/month</p>
-                      <p className="text-xs text-slate-500">5 Safes • All features • 1000 calls/day</p>
+                      <p className="font-semibold text-base">Go Pro — $20/month</p>
+                      <p className="text-sm text-slate-500">5 Safes • All features • 1000 calls/day</p>
                     </div>
                   </div>
                   <Suspense fallback={<div className="text-center py-3 text-sm text-slate-500">Loading payment...</div>}>
                     <LazyDaimoCheckout onPaymentCompleted={handlePaymentCompleted} />
                   </Suspense>
-                  <p className="text-xs text-center text-slate-600">
+                  <p className="text-sm text-center text-slate-500">
                     Pay with 1200+ tokens on 20+ chains
                   </p>
                 </div>
@@ -229,11 +229,11 @@ export default function Login() {
                 <div className="flex items-center gap-3">
                   <Ticket size={20} className="text-amber-400" />
                   <div className="text-left">
-                    <p className="font-medium text-sm">Have a promo code?</p>
-                    <p className="text-xs text-slate-500">Friends & Family access</p>
+                    <p className="font-medium text-base">Have a promo code?</p>
+                    <p className="text-sm text-slate-500">Friends & Family access</p>
                   </div>
                 </div>
-                <span className="text-xs text-amber-400 font-medium">FREE</span>
+                <span className="text-sm text-amber-400 font-medium">FREE</span>
               </button>
             </>
           )}
@@ -243,14 +243,14 @@ export default function Login() {
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Start Free</h1>
-                <p className="text-sm text-slate-400">
+                <p className="text-base text-slate-400">
                   Enter your Safe multisig address to get started
                 </p>
               </div>
               <form onSubmit={handleFreeSignup} className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-slate-500">Safe Address</label>
+                    <label className="text-sm text-slate-400">Safe Address</label>
                     <div className="group relative">
                       <Info size={14} className="text-slate-600 hover:text-slate-400 cursor-help" />
                       <div className="absolute right-0 bottom-6 w-56 bg-slate-800 border border-slate-700 rounded-lg p-3 text-xs text-slate-400 leading-relaxed invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all z-50 shadow-xl">
@@ -282,7 +282,7 @@ export default function Login() {
                       We'll monitor all pending transactions on this Safe
                     </p>
                   )}
-                  <p className="text-xs text-slate-600 mt-1.5">
+                  <p className="text-sm text-slate-500 mt-1.5">
                     Don't have a Safe?{' '}
                     <a
                       href="https://app.safe.global/new-safe/create"
@@ -306,7 +306,7 @@ export default function Login() {
               <PrerequisiteCheclistCompact />
 
               <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800/60">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3 font-semibold">Scout Plan (Free)</p>
+                <p className="text-sm text-slate-400 uppercase tracking-wider mb-3 font-semibold">Scout Plan (Free)</p>
                 <ul className="text-sm text-slate-400 space-y-2">
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" /> 1 Safe monitored
@@ -328,7 +328,7 @@ export default function Login() {
                   </li>
                 </ul>
               </div>
-              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
+              <button onClick={() => setStep('choose')} className="w-full text-center text-sm text-slate-500 hover:text-slate-300">← Back</button>
             </>
           )}
 
@@ -344,7 +344,7 @@ export default function Login() {
               <p className="text-sm text-slate-400">
                 {step === 'free' ? 'Setting up your free SandGuard account...' : step === 'recover' ? 'Searching for your subscription...' : step === 'promo' ? 'Validating your promo code...' : 'Processing your payment...'}
               </p>
-              <p className="text-xs text-slate-600 mt-3">This usually takes a few seconds</p>
+              <p className="text-sm text-slate-500 mt-3">This usually takes a few seconds</p>
             </div>
           )}
 
@@ -353,11 +353,11 @@ export default function Login() {
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Promo Code</h1>
-                <p className="text-sm text-slate-400">Enter your Friends & Family code</p>
+                <p className="text-base text-slate-400">Enter your Friends & Family code</p>
               </div>
               <form onSubmit={handlePromoRedeem} className="space-y-4">
                 <div>
-                  <label className="text-xs text-slate-500 block mb-1.5">Code</label>
+                  <label className="text-sm text-slate-400 block mb-1.5">Code</label>
                   <input
                     type="text" value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
@@ -371,7 +371,7 @@ export default function Login() {
                   {verifying ? 'Activating...' : 'Activate Free Access'}
                 </button>
               </form>
-              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
+              <button onClick={() => setStep('choose')} className="w-full text-center text-sm text-slate-500 hover:text-slate-300">← Back</button>
             </>
           )}
 
@@ -380,11 +380,11 @@ export default function Login() {
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Recover Access</h1>
-                <p className="text-sm text-slate-400">Enter the wallet address you originally paid with</p>
+                <p className="text-base text-slate-400">Enter the wallet address you originally paid with</p>
               </div>
               <form onSubmit={handleRecover} className="space-y-4">
                 <div>
-                  <label className="text-xs text-slate-500 block mb-1.5">Wallet Address</label>
+                  <label className="text-sm text-slate-400 block mb-1.5">Wallet Address</label>
                   <input
                     type="text" value={recoverAddress}
                     onChange={(e) => setRecoverAddress(e.target.value)}
@@ -410,10 +410,10 @@ export default function Login() {
                   {verifying ? 'Checking...' : 'Recover Subscription'}
                 </button>
               </form>
-              <p className="text-xs text-slate-600 text-center">
+              <p className="text-sm text-slate-500 text-center">
                 Can't remember which address you used? Check your wallet's transaction history for a $20 USDC payment.
               </p>
-              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
+              <button onClick={() => setStep('choose')} className="w-full text-center text-sm text-slate-500 hover:text-slate-300">← Back</button>
             </>
           )}
 

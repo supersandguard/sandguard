@@ -72,7 +72,7 @@ export default function Landing() {
       <main>
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-8">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           Free tier available — no credit card required
         </div>
@@ -102,17 +102,17 @@ export default function Landing() {
           </button>
         </div>
         {/* Trust signals */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-10 text-xs text-slate-500">
-          <span className="flex items-center gap-1.5">
-            <CheckCircle size={14} className="text-emerald-500" />
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-10 text-sm text-slate-400">
+          <span className="flex items-center gap-2">
+            <CheckCircle size={16} className="text-emerald-500" />
             Built on Safe — $100B+ secured
           </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle size={14} className="text-emerald-500" />
+          <span className="flex items-center gap-2">
+            <CheckCircle size={16} className="text-emerald-500" />
             No wallet connection required
           </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle size={14} className="text-emerald-500" />
+          <span className="flex items-center gap-2">
+            <CheckCircle size={16} className="text-emerald-500" />
             Read-only — never touches your keys
           </span>
         </div>
@@ -120,7 +120,7 @@ export default function Landing() {
 
       {/* Features */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-12">
+        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-12">
           What SandGuard does
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -131,7 +131,7 @@ export default function Landing() {
             >
               <span className="mb-4 block">{f.icon}</span>
               <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+              <p className="text-sm md:text-base text-slate-400 leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -142,27 +142,27 @@ export default function Landing() {
         <div className="max-w-3xl mx-auto bg-gradient-to-b from-slate-900/80 to-slate-900/30 rounded-2xl border border-slate-800/60 p-8 md:p-10">
           <div className="flex items-center gap-2 mb-4">
             <Wallet size={20} className="text-emerald-400" />
-            <h2 className="text-lg font-bold">New to Safe? Here's the quick version</h2>
+            <h2 className="text-lg md:text-xl font-bold">New to Safe? Here's the quick version</h2>
           </div>
-          <p className="text-sm text-slate-400 leading-relaxed mb-5">
+          <p className="text-base text-slate-400 leading-relaxed mb-5">
             A <strong className="text-slate-200">Safe</strong> (formerly Gnosis Safe) is the most widely-used smart contract wallet in crypto.
             It's like a shared bank account that requires <strong className="text-slate-200">multiple approvals</strong> (e.g., 2 of 3 team members) before any transaction goes through.
           </p>
           <div className="grid sm:grid-cols-3 gap-4 mb-5">
             <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/40">
-              <p className="text-sm font-medium text-slate-200 mb-1">👥 Multi-sig</p>
-              <p className="text-xs text-slate-400">Multiple people must approve each transaction</p>
+              <p className="text-base font-medium text-slate-200 mb-1">👥 Multi-sig</p>
+              <p className="text-sm text-slate-400">Multiple people must approve each transaction</p>
             </div>
             <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/40">
-              <p className="text-sm font-medium text-slate-200 mb-1">🔐 Secure</p>
-              <p className="text-xs text-slate-400">No single point of failure — lose one key, funds are still safe</p>
+              <p className="text-base font-medium text-slate-200 mb-1">🔐 Secure</p>
+              <p className="text-sm text-slate-400">No single point of failure — lose one key, funds are still safe</p>
             </div>
             <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/40">
-              <p className="text-sm font-medium text-slate-200 mb-1">🏗️ Trusted</p>
-              <p className="text-xs text-slate-400">Used by Ethereum Foundation, DAOs, and major protocols</p>
+              <p className="text-base font-medium text-slate-200 mb-1">🏗️ Trusted</p>
+              <p className="text-sm text-slate-400">Used by Ethereum Foundation, DAOs, and major protocols</p>
             </div>
           </div>
-          <p className="text-sm text-slate-400 leading-relaxed mb-4">
+          <p className="text-base text-slate-400 leading-relaxed mb-4">
             <strong className="text-slate-200">The problem:</strong> when a transaction hits your queue, you see raw hex data and contract addresses.
             SandGuard translates that into plain English so you know exactly what you're signing.
           </p>
@@ -180,7 +180,7 @@ export default function Landing() {
 
       {/* How it works */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-12">
+        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-12">
           How it works
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -189,7 +189,7 @@ export default function Landing() {
               <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-lg font-bold">
                 {s.num}
               </div>
-              <p className="text-sm text-slate-300">{s.text}</p>
+              <p className="text-sm md:text-base text-slate-300">{s.text}</p>
             </div>
           ))}
         </div>
@@ -197,10 +197,10 @@ export default function Landing() {
 
       {/* Getting Started — What You Need */}
       <section className="max-w-5xl mx-auto px-6 py-20">
-        <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-4">
           Getting Started
         </h2>
-        <p className="text-center text-slate-400 text-base max-w-xl mx-auto mb-14">
+        <p className="text-center text-slate-400 text-base md:text-lg max-w-xl mx-auto mb-14">
           SandGuard works with Safe multisig wallets. Here's what you need to get up and running.
         </p>
 
@@ -212,10 +212,10 @@ export default function Landing() {
               <Shield size={20} className="text-emerald-400" />
             </div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs font-bold text-emerald-400/60 uppercase tracking-wider">Step 1</span>
+              <span className="text-sm font-bold text-emerald-400/60 uppercase tracking-wider">Step 1</span>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Create a Safe</h3>
-            <p className="text-sm text-slate-400 leading-relaxed mb-4">
+            <h3 className="text-lg md:text-xl font-semibold mb-2">Create a Safe</h3>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed mb-4">
               A Safe is a smart contract wallet that requires multiple approvals for every transaction.
               Think of it as a bank vault that needs 2 of 3 keys to open.
             </p>
@@ -236,14 +236,14 @@ export default function Landing() {
               <Users size={20} className="text-cyan-400" />
             </div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs font-bold text-cyan-400/60 uppercase tracking-wider">Step 2</span>
+              <span className="text-sm font-bold text-cyan-400/60 uppercase tracking-wider">Step 2</span>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Add Your Signers</h3>
-            <p className="text-sm text-slate-400 leading-relaxed mb-4">
+            <h3 className="text-lg md:text-xl font-semibold mb-2">Add Your Signers</h3>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed mb-4">
               Each signer can use MetaMask, Ledger, Trezor, or any Ethereum-compatible wallet.
               Hardware wallets recommended for maximum security.
             </p>
-            <div className="flex items-center gap-3 text-xs text-slate-500">
+            <div className="flex items-center gap-3 text-sm text-slate-500">
               <span className="px-2 py-1 rounded bg-slate-800 border border-slate-700/60">MetaMask</span>
               <span className="px-2 py-1 rounded bg-slate-800 border border-slate-700/60">Ledger</span>
               <span className="px-2 py-1 rounded bg-slate-800 border border-slate-700/60">Trezor</span>
@@ -257,10 +257,10 @@ export default function Landing() {
               <Key size={20} className="text-emerald-400" />
             </div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs font-bold text-emerald-400/60 uppercase tracking-wider">Step 3</span>
+              <span className="text-sm font-bold text-emerald-400/60 uppercase tracking-wider">Step 3</span>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Connect to SandGuard</h3>
-            <p className="text-sm text-slate-400 leading-relaxed mb-4">
+            <h3 className="text-lg md:text-xl font-semibold mb-2">Connect to SandGuard</h3>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed mb-4">
               Paste your Safe address and SandGuard monitors every transaction before you sign.
               Decode calldata, simulate outcomes, and get risk scores automatically.
             </p>
@@ -276,8 +276,8 @@ export default function Landing() {
 
         {/* Full Prerequisites Checklist */}
         <div className="max-w-xl mx-auto">
-          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 text-center">
-            Full prerequisites checklist
+          <h3 className="text-base md:text-lg font-bold text-slate-300 uppercase tracking-wider mb-6 text-center">
+            Full Prerequisites Checklist
           </h3>
           <PrerequisiteChecklist />
         </div>
@@ -294,12 +294,12 @@ export default function Landing() {
             </svg>
           </div>
           <div className="flex-1 text-center md:text-left">
-            <h3 className="text-xl font-bold mb-2">
+            <h3 className="text-xl md:text-2xl font-bold mb-2">
               Built for{' '}
               <span className="text-[#12FF80]">Safe</span>
               <span className="text-slate-500">{'{Wallet}'}</span>
             </h3>
-            <p className="text-sm text-slate-400 leading-relaxed mb-4 max-w-lg">
+            <p className="text-base text-slate-400 leading-relaxed mb-4 max-w-lg">
               SandGuard integrates with Safe — the most trusted smart wallet infrastructure, securing over $100B+ in onchain assets.
               Used by Ethereum Foundation, Worldcoin, Vitalik Buterin, and thousands of DAOs worldwide.
             </p>
@@ -329,18 +329,18 @@ export default function Landing() {
 
       {/* Pricing */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-12">
+        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-12">
           Simple pricing
         </h2>
         <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
           {/* Scout - FREE */}
           <div className="bg-slate-900/50 rounded-2xl p-8 border border-slate-800/60 flex flex-col">
-            <p className="text-sm text-slate-400 mb-2">Scout</p>
+            <p className="text-base text-slate-400 mb-2">Scout</p>
             <div className="flex items-baseline gap-1 mb-2">
               <span className="text-5xl font-bold">Free</span>
             </div>
-            <p className="text-sm text-slate-400 mb-6">No credit card required</p>
-            <ul className="text-sm text-slate-400 space-y-3 mb-8 flex-1">
+            <p className="text-base text-slate-400 mb-6">No credit card required</p>
+            <ul className="text-base text-slate-400 space-y-3 mb-8 flex-1">
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-400" /> 1 Safe monitored
               </li>
@@ -370,16 +370,16 @@ export default function Landing() {
 
           {/* Pro - $20/mo */}
           <div className="bg-slate-900/50 rounded-2xl p-8 border-2 border-emerald-500/40 flex flex-col relative">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full uppercase tracking-wider">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-emerald-500 text-white text-sm font-bold rounded-full uppercase tracking-wider">
               Most Popular
             </div>
-            <p className="text-sm text-slate-400 mb-2">Pro</p>
+            <p className="text-base text-slate-400 mb-2">Pro</p>
             <div className="flex items-baseline gap-1 mb-2">
               <span className="text-5xl font-bold">$20</span>
               <span className="text-slate-500">/month</span>
             </div>
-            <p className="text-sm text-slate-400 mb-6">Pay with any crypto</p>
-            <ul className="text-sm text-slate-400 space-y-3 mb-8 flex-1">
+            <p className="text-base text-slate-400 mb-6">Pay with any crypto</p>
+            <ul className="text-base text-slate-400 space-y-3 mb-8 flex-1">
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-400" /> 5 Safes monitored
               </li>
@@ -405,7 +405,7 @@ export default function Landing() {
             >
               Go Pro →
             </Link>
-            <p className="text-xs text-slate-600 mt-3 text-center">Pay with any crypto • Cancel anytime</p>
+            <p className="text-sm text-slate-500 mt-3 text-center">Pay with any crypto • Cancel anytime</p>
           </div>
         </div>
       </section>
@@ -442,14 +442,14 @@ export default function Landing() {
               href="https://safe.global"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-slate-400 transition-colors"
+              className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-400 transition-colors"
             >
               <svg width="14" height="14" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M374.7 201.2H355.4V158.5C355.4 104 311.4 60 256.9 60H256C201.5 60 157.5 104 157.5 158.5V201.2H137.3C121.2 201.2 108.2 214.2 108.2 230.3V393.9C108.2 410 121.2 423 137.3 423H374.7C390.8 423 403.8 410 403.8 393.9V230.3C403.8 214.2 390.8 201.2 374.7 201.2ZM273.9 343.6V370.3C273.9 380.2 265.8 388.3 255.9 388.3C246 388.3 237.9 380.2 237.9 370.3V343.6C228.4 337 222.3 326.1 222.3 313.7C222.3 293.2 238.9 276.6 259.4 276.6C279.9 276.6 296.5 293.2 296.5 313.7C296.5 326.1 290.4 337 280.9 343.6H273.9ZM315.4 201.2H196.6V158.5C196.6 125.7 223.2 99.1 256 99.1C288.8 99.1 315.4 125.7 315.4 158.5V201.2Z" fill="currentColor" />
               </svg>
               Powered by Safe
             </a>
-            <p className="text-xs text-slate-600">{new Date().getFullYear()} SandGuard</p>
+            <p className="text-sm text-slate-500">{new Date().getFullYear()} SandGuard</p>
           </div>
         </div>
       </footer>
