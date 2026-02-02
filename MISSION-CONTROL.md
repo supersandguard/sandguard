@@ -63,6 +63,8 @@
 ## 📊 Activity Feed
 
 ```
+00:00 — Deploy #4 triggered — removed nixpacks.toml (possible config clash with railway.json)
+23:55 — Deploy #3 triggered (detach) — still not reflecting
 23:48 — Deploy #2 triggered — all 6 agents done, waiting for Railway build
 23:38 — Deploy #1 triggered but missed late commits
 23:37 — ux-quickwins COMPLETED (73ec733) — demo routing, badge, empty states, page titles

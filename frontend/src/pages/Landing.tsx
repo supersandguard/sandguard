@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, Zap, Shield, Bell, Check, X } from 'lucide-react'
+import { Search, Zap, Shield, Bell, Check, X, Key, Users, Wallet, ArrowRight, ExternalLink, CheckCircle } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import PrerequisiteChecklist from '../components/PrerequisiteChecklist'
 import type { ReactNode } from 'react'
 
 const features: { icon: ReactNode; title: string; desc: string }[] = [
@@ -82,8 +83,8 @@ export default function Landing() {
           </span>
         </h1>
         <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Don't trust, verify — without reading Solidity. SandGuard decodes, simulates, and scores every
-          transaction before you sign. Know exactly what you're approving.
+          Protect your Safe multisig. Decode, simulate, and risk-score every transaction before your team signs.
+          No Solidity required — know exactly what you're approving.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
