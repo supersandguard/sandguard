@@ -36,7 +36,7 @@ export default function TxDetail() {
         <div className="flex items-start justify-between">
           <div>
             <p className="text-lg font-bold">{tx.explanation?.summary || tx.decoded?.functionName || 'Transaction'}</p>
-            <p className="text-xs text-slate-500 mt-1">Nonce #{tx.nonce} · {tx.confirmations}/{tx.confirmationsRequired} signatures</p>
+            <p className="text-sm text-slate-400 mt-1">Nonce #{tx.nonce} · {tx.confirmations}/{tx.confirmationsRequired} signatures</p>
           </div>
           {tx.risk && <RiskBadge level={tx.risk.score} size="lg" />}
         </div>
@@ -84,24 +84,24 @@ export default function TxDetail() {
           <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Search className="w-4 h-4" /> Decoded Data</h3>
           <div className="space-y-3">
             <div>
-              <p className="text-xs text-slate-500">Function</p>
+              <p className="text-sm text-slate-400">Function</p>
               <p className="font-mono text-sm text-emerald-400">{tx.decoded.functionSignature}</p>
             </div>
             {tx.decoded.protocol && (
               <div>
-                <p className="text-xs text-slate-500">Protocol</p>
+                <p className="text-sm text-slate-400">Protocol</p>
                 <p className="text-sm">{tx.decoded.protocol.name} <span className="text-slate-500">({tx.decoded.protocol.category})</span></p>
               </div>
             )}
             <div>
-              <p className="text-xs text-slate-500 mb-2">Parameters</p>
+              <p className="text-sm text-slate-400 mb-2">Parameters</p>
               {tx.decoded.parameters.map((p, i) => (
                 <div key={i} className="flex justify-between items-start py-1.5 border-t border-slate-800/50">
                   <div>
-                    <p className="text-xs font-mono text-slate-400">{p.name} <span className="text-slate-600">({p.type})</span></p>
-                    {p.label && <p className="text-xs text-slate-500">{p.label}</p>}
+                    <p className="text-sm font-mono text-slate-400">{p.name} <span className="text-slate-500">({p.type})</span></p>
+                    {p.label && <p className="text-sm text-slate-500">{p.label}</p>}
                   </div>
-                  <p className="font-mono text-xs text-slate-300 max-w-[180px] truncate text-right">{p.value}</p>
+                  <p className="font-mono text-sm text-slate-300 max-w-[180px] truncate text-right">{p.value}</p>
                 </div>
               ))}
             </div>
@@ -132,11 +132,11 @@ export default function TxDetail() {
           <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Fuel className="w-4 h-4" /> Simulation</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs text-slate-500">Status</p>
+              <p className="text-sm text-slate-400">Status</p>
               <p className="text-sm">{tx.simulation.success ? '✅ Succeeded' : '❌ Failed'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Estimated Gas</p>
+              <p className="text-sm text-slate-400">Estimated Gas</p>
               <p className="font-mono text-sm">{tx.simulation.gasUsed.toLocaleString()}</p>
             </div>
           </div>
@@ -150,16 +150,16 @@ export default function TxDetail() {
         </summary>
         <div className="px-5 pb-5 space-y-2">
           <div>
-            <p className="text-xs text-slate-500">To</p>
-            <p className="font-mono text-xs text-slate-300 break-all">{tx.to}</p>
+            <p className="text-sm text-slate-400">To</p>
+            <p className="font-mono text-sm text-slate-300 break-all">{tx.to}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Value</p>
-            <p className="font-mono text-xs text-slate-300">{tx.value} wei</p>
+            <p className="text-sm text-slate-400">Value</p>
+            <p className="font-mono text-sm text-slate-300">{tx.value} wei</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Data</p>
-            <p className="font-mono text-xs text-slate-300 break-all max-h-24 overflow-y-auto">{tx.data}</p>
+            <p className="text-sm text-slate-400">Data</p>
+            <p className="font-mono text-sm text-slate-300 break-all max-h-24 overflow-y-auto">{tx.data}</p>
           </div>
         </div>
       </details>

@@ -69,7 +69,7 @@ export default function Settings() {
 
   return (
     <div className="px-4 py-6 space-y-6">
-      <h2 className="text-lg font-bold text-slate-300 uppercase tracking-wider">Settings</h2>
+      <h2 className="text-xl font-bold text-slate-200 uppercase tracking-wider">Settings</h2>
 
       {/* Connection */}
       <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800 space-y-4">
@@ -194,7 +194,7 @@ export default function Settings() {
         {/* Safe info hint */}
         <div className="flex items-start gap-2.5 p-3 rounded-lg bg-slate-800/50 border border-slate-700/40">
           <Shield size={14} className="text-emerald-400 mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-slate-500 leading-relaxed">
+          <p className="text-sm text-slate-400 leading-relaxed">
             SandGuard monitors all pending transactions on your Safe and analyzes them before your team signs. Manage owners, threshold, and modules in the{' '}
             <a
               href="https://app.safe.global"

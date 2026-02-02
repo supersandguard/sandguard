@@ -79,7 +79,7 @@ export default function Dashboard() {
           </button>
         </div>
         {lastUpdated && (
-          <p className="text-xs text-slate-600 mt-3">
+          <p className="text-xs text-slate-500 mt-3">
             Updated: {formatTime(lastUpdated)}
             {refreshing && <span className="text-emerald-400 ml-2 animate-pulse">refreshing...</span>}
           </p>
@@ -112,7 +112,7 @@ export default function Dashboard() {
       {/* Pending */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-slate-300 uppercase tracking-wider">
+          <h2 className="text-lg font-bold text-slate-300 uppercase tracking-wider">
             Pending {loading && <span className="text-emerald-400 animate-pulse">⟳</span>}
           </h2>
           <Link to="/app/queue" className="text-sm text-emerald-400 hover:underline">View all →</Link>
@@ -128,9 +128,9 @@ export default function Dashboard() {
               <>
                 <ShieldCheck className="w-10 h-10 text-slate-600 mx-auto mb-3" />
                 <p className="text-sm font-medium text-slate-300 mb-1">No pending transactions</p>
-                <p className="text-xs text-slate-500">Your Safe is secure</p>
+                <p className="text-sm text-slate-500">Your Safe is secure</p>
                 {lastUpdated && (
-                  <p className="text-xs text-slate-600 mt-3">
+                  <p className="text-xs text-slate-500 mt-3">
                     Last checked: {formatTime(lastUpdated)}
                   </p>
                 )}
@@ -139,7 +139,7 @@ export default function Dashboard() {
               <>
                 <Settings className="w-10 h-10 text-slate-600 mx-auto mb-3" />
                 <p className="text-sm font-medium text-slate-300 mb-1">No Safe configured yet</p>
-                <p className="text-xs text-slate-500 max-w-xs mx-auto mb-4">
+                <p className="text-sm text-slate-500 max-w-xs mx-auto mb-4">
                   Add your Safe multisig address in Settings to start monitoring transactions, decoding calldata, and getting risk scores.
                 </p>
                 <Link

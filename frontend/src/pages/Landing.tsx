@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Search, Zap, Shield, Bell, Check, X, Key, Users, Wallet, ArrowRight, ExternalLink, CheckCircle } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
 import PrerequisiteChecklist from '../components/PrerequisiteChecklist'
 import type { ReactNode } from 'react'
 
@@ -36,9 +35,6 @@ const steps = [
 ]
 
 export default function Landing() {
-  const navigate = useNavigate()
-  const { setDemoMode } = useAuth()
-
   useEffect(() => { document.title = 'SandGuard — Transaction Firewall for Safe Multisig' }, [])
 
   return (
@@ -92,14 +88,14 @@ export default function Landing() {
             to="/login"
             className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-base hover:opacity-90 transition-opacity"
           >
-            Start Free — No Payment Required
+            Get Started Free
           </Link>
-          <button
-            onClick={() => { setDemoMode(); navigate('/app') }}
+          <a
+            href="#pricing"
             className="px-8 py-3.5 rounded-xl bg-slate-800 text-slate-300 font-medium text-base border border-slate-700 hover:border-slate-600 transition-colors"
           >
-            Try Demo →
-          </button>
+            View Pricing →
+          </a>
         </div>
         {/* Trust signals */}
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-10 text-sm text-slate-400">
@@ -120,7 +116,7 @@ export default function Landing() {
 
       {/* Features */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-12">
+        <h2 className="text-center text-lg md:text-xl font-bold text-slate-300 uppercase tracking-wider mb-12">
           What SandGuard does
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -180,7 +176,7 @@ export default function Landing() {
 
       {/* How it works */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-12">
+        <h2 className="text-center text-lg md:text-xl font-bold text-slate-300 uppercase tracking-wider mb-12">
           How it works
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -197,7 +193,7 @@ export default function Landing() {
 
       {/* Getting Started — What You Need */}
       <section className="max-w-5xl mx-auto px-6 py-20">
-        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-4">
+        <h2 className="text-center text-lg md:text-xl font-bold text-slate-300 uppercase tracking-wider mb-4">
           Getting Started
         </h2>
         <p className="text-center text-slate-400 text-base md:text-lg max-w-xl mx-auto mb-14">
@@ -276,7 +272,7 @@ export default function Landing() {
 
         {/* Full Prerequisites Checklist */}
         <div className="max-w-xl mx-auto">
-          <h3 className="text-base md:text-lg font-bold text-slate-300 uppercase tracking-wider mb-6 text-center">
+          <h3 className="text-lg md:text-xl font-bold text-slate-200 uppercase tracking-wider mb-6 text-center">
             Full Prerequisites Checklist
           </h3>
           <PrerequisiteChecklist />
@@ -329,7 +325,7 @@ export default function Landing() {
 
       {/* Pricing */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <h2 className="text-center text-base md:text-lg font-bold text-slate-400 uppercase tracking-wider mb-12">
+        <h2 id="pricing" className="text-center text-lg md:text-xl font-bold text-slate-300 uppercase tracking-wider mb-12">
           Simple pricing
         </h2>
         <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">

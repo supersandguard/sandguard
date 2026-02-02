@@ -17,7 +17,7 @@ export default function TxQueue() {
   return (
     <div className="px-4 py-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-base font-bold text-slate-300 uppercase tracking-wider">
+        <h2 className="text-lg font-bold text-slate-300 uppercase tracking-wider">
           Transaction Queue ({transactions.length})
           {refreshing && <span className="text-emerald-400 animate-pulse ml-1">⟳</span>}
         </h2>
@@ -41,7 +41,7 @@ export default function TxQueue() {
           <p className="text-base font-medium text-slate-300 mb-2">No pending transactions</p>
           <p className="text-sm text-slate-500 mb-4">Your Safe is secure</p>
           {lastUpdated && (
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-slate-500">
               Last checked: {formatTime(lastUpdated)}
             </p>
           )}
@@ -92,7 +92,7 @@ export default function TxQueue() {
       )}
 
       {lastUpdated && transactions.length > 0 && (
-        <p className="text-xs text-slate-600 text-center mt-4">
+        <p className="text-xs text-slate-500 text-center mt-4">
           Updated: {formatTime(lastUpdated)}
         </p>
       )}

@@ -70,6 +70,20 @@
 
 ---
 
+## 2025-07-25 — Safe + AI Thread Companion Post
+
+### New Post Created
+- **Title:** Safe + AI: The Verification Gap Nobody Is Talking About
+- **Submolt:** crypto
+- **Post ID:** f79964b8-ce7d-49fa-bb2e-791526ddb81e
+- **URL:** https://www.moltbook.com/post/f79964b8-ce7d-49fa-bb2e-791526ddb81e
+- **Time:** 2026-02-02T15:48:09Z
+- **Content:** Adapted X Thread C (Safe + AI) for Moltbook audience. Focused on agents-verifying-agents angle, separation of concerns in AI security, verification as ecosystem infrastructure. Linked to full blog post and supersandguard.com.
+- **Companion X Thread:** https://x.com/beto_neh/status/2018349932915098039
+- **Companion Blog Post:** https://supersandguard.github.io/sandguard/safe-plus-ai-the-missing-security-layer.html
+
+---
+
 ## 2026-02-02 — Referral Program Launch Session
 
 ### New Post Created

@@ -18,7 +18,7 @@ const getApiBase = () => {
 
 export default function Login() {
   const navigate = useNavigate()
-  const { login, setDemoMode } = useAuth()
+  const { login } = useAuth()
 
   useEffect(() => { document.title = 'Get Started — SandGuard' }, [])
 
@@ -417,23 +417,17 @@ export default function Login() {
             </>
           )}
 
-          {/* Already paid + Demo links */}
-          <div className="text-center pt-4 border-t border-slate-800/40 space-y-2">
-            {step === 'choose' && (
+          {/* Already paid link */}
+          {step === 'choose' && (
+            <div className="text-center pt-4 border-t border-slate-800/40">
               <button
                 onClick={() => { setStep('recover'); setError('') }}
                 className="text-sm text-cyan-500 hover:text-cyan-400 transition-colors block w-full"
               >
                 Already paid? Recover access →
               </button>
-            )}
-            <button
-              onClick={() => { setDemoMode(); navigate('/app') }}
-              className="text-sm text-slate-500 hover:text-emerald-400 transition-colors block w-full"
-            >
-              Skip — try the demo →
-            </button>
-          </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
