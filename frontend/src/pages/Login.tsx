@@ -10,8 +10,9 @@ const BASE_CHAIN_ID = 8453
 export default function Login() {
   const navigate = useNavigate()
   const { login, setDemoMode } = useAuth()
-  const [step, setStep] = useState<'choose' | 'promo'>('choose')
+  const [step, setStep] = useState<'choose' | 'promo' | 'recover'>('choose')
   const [promoCode, setPromoCode] = useState('')
+  const [recoverAddress, setRecoverAddress] = useState('')
   const [verifying, setVerifying] = useState(false)
   const [error, setError] = useState('')
 
@@ -38,6 +39,32 @@ export default function Login() {
         navigate('/app')
       } else {
         setError(data.error || 'Payment activation failed')
+      }
+    } catch {
+      setError('Connection failed. Check your API URL in Settings.')
+    } finally {
+      setVerifying(false)
+    }
+  }
+
+  const handleRecover = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!recoverAddress.trim()) return
+    setVerifying(true)
+    setError('')
+    try {
+      const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
+      const response = await fetch(`${API_BASE}/api/payments/recover`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: recoverAddress.trim() })
+      })
+      const data = await response.json()
+      if (response.ok && data.apiKey) {
+        login(data.apiKey, '')
+        navigate('/app')
+      } else {
+        setError(data.error || 'No subscription found for this address')
       }
     } catch {
       setError('Connection failed. Check your API URL in Settings.')
@@ -204,11 +231,46 @@ export default function Login() {
             </>
           )}
 
-          {/* Demo link */}
-          <div className="text-center pt-4 border-t border-slate-800/40">
+          {/* Step: Recover */}
+          {step === 'recover' && (
+            <>
+              <div className="text-center">
+                <h1 className="text-2xl font-bold mb-2">Recover Access</h1>
+                <p className="text-sm text-slate-400">Enter the wallet address you paid with</p>
+              </div>
+              <form onSubmit={handleRecover} className="space-y-4">
+                <div>
+                  <label className="text-xs text-slate-500 block mb-1.5">Wallet Address</label>
+                  <input
+                    type="text" value={recoverAddress}
+                    onChange={(e) => setRecoverAddress(e.target.value)}
+                    placeholder="0x..."
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none focus:border-cyan-500 placeholder:text-slate-600 text-center"
+                  />
+                </div>
+                <button type="submit" disabled={verifying || !recoverAddress.trim()}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {verifying ? 'Checking...' : 'Recover Subscription'}
+                </button>
+              </form>
+              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
+            </>
+          )}
+
+          {/* Already paid + Demo links */}
+          <div className="text-center pt-4 border-t border-slate-800/40 space-y-2">
+            {step === 'choose' && (
+              <button
+                onClick={() => { setStep('recover'); setError('') }}
+                className="text-sm text-cyan-500 hover:text-cyan-400 transition-colors block w-full"
+              >
+                Already paid? Recover access →
+              </button>
+            )}
             <button
               onClick={() => { setDemoMode(); navigate('/app') }}
-              className="text-sm text-slate-500 hover:text-emerald-400 transition-colors"
+              className="text-sm text-slate-500 hover:text-emerald-400 transition-colors block w-full"
             >
               Skip — try the demo →
             </button>
