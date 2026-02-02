@@ -334,12 +334,17 @@ export default function Login() {
 
           {/* Processing payment */}
           {verifying && (
-            <div className="text-center">
-              <h1 className="text-2xl font-bold mb-2">Activating Subscription</h1>
-              <p className="text-sm text-slate-400">Processing your payment...</p>
-              <div className="mt-6 flex justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+            <div className="text-center py-4">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-emerald-500/20 border-t-emerald-500"></div>
               </div>
+              <h1 className="text-2xl font-bold mb-2">
+                {step === 'free' ? 'Creating Your Account' : step === 'recover' ? 'Looking Up Subscription' : step === 'promo' ? 'Activating Code' : 'Activating Subscription'}
+              </h1>
+              <p className="text-sm text-slate-400">
+                {step === 'free' ? 'Setting up your free SandGuard account...' : step === 'recover' ? 'Searching for your subscription...' : step === 'promo' ? 'Validating your promo code...' : 'Processing your payment...'}
+              </p>
+              <p className="text-xs text-slate-600 mt-3">This usually takes a few seconds</p>
             </div>
           )}
 

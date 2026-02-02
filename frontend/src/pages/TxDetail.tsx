@@ -12,9 +12,17 @@ export default function TxDetail() {
 
   if (!tx) {
     return (
-      <div className="px-4 py-12 text-center">
-        <p className="text-slate-500">Transaction not found</p>
-        <button onClick={() => navigate('/app/queue')} className="mt-4 text-emerald-400 text-sm">← Back</button>
+      <div className="px-4 py-16 text-center">
+        <div className="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700/60 flex items-center justify-center mx-auto mb-4">
+          <Search size={24} className="text-slate-600" />
+        </div>
+        <p className="text-base font-medium text-slate-300 mb-1">Transaction not found</p>
+        <p className="text-sm text-slate-500 mb-6 max-w-xs mx-auto">
+          This transaction may have been executed or removed from the queue.
+        </p>
+        <button onClick={() => navigate('/app/queue')} className="text-emerald-400 text-sm font-medium hover:text-emerald-300 transition-colors">
+          ← Back to queue
+        </button>
       </div>
     )
   }
