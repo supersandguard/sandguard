@@ -1,87 +1,98 @@
 import { useState, useEffect } from 'react'
+import SafeAppsSDK, { type SafeInfo } from '@safe-global/safe-apps-sdk'
 
 interface SafeAppContext {
   /** True when the app is running inside an iframe (likely Safe App Store) */
   isInsideIframe: boolean
-  /** The parent origin, if available (e.g., "https://app.safe.global") */
-  parentOrigin: string | null
-  /** Whether we think this is a Safe App context specifically */
+  /** Whether we confirmed this is a Safe App context via SDK */
   isSafeApp: boolean
-  /** Safe address detected from URL params or parent context (future: SDK) */
+  /** Connected Safe info from SDK */
+  safe: SafeInfo | null
+  /** Safe address */
   safeAddress: string | null
-  /** Chain ID from URL params (future: SDK) */
+  /** Chain ID */
   chainId: number | null
+  /** SDK instance for further calls */
+  sdk: SafeAppsSDK | null
+  /** Loading state while SDK connects */
+  loading: boolean
 }
 
 /**
- * Detect if the app is running inside a Safe App iframe.
- * 
- * For now this is lightweight detection via iframe check + URL params.
- * Full @safe-global/safe-apps-sdk integration comes later.
- * 
- * Safe App Store passes context via URL search params or postMessage.
- * Common params: safe=<address>&chain=<chainId>
+ * Connect to Safe Apps SDK when running inside Safe Wallet iframe.
+ * Falls back gracefully when running standalone.
  */
 export function useSafeApp(): SafeAppContext {
   const [context, setContext] = useState<SafeAppContext>({
     isInsideIframe: false,
-    parentOrigin: null,
     isSafeApp: false,
+    safe: null,
     safeAddress: null,
     chainId: null,
+    sdk: null,
+    loading: true,
   })
 
   useEffect(() => {
-    // Check if running inside an iframe
     const isInsideIframe = window.self !== window.top
 
     if (!isInsideIframe) {
       setContext({
         isInsideIframe: false,
-        parentOrigin: null,
         isSafeApp: false,
+        safe: null,
         safeAddress: null,
         chainId: null,
+        sdk: null,
+        loading: false,
       })
       return
     }
 
-    // Try to detect parent origin (may be blocked by CORS)
-    let parentOrigin: string | null = null
-    try {
-      parentOrigin = document.referrer ? new URL(document.referrer).origin : null
-    } catch {
-      // referrer parsing failed — that's fine
-    }
-
-    // Check if parent looks like Safe App Store
-    const isSafeApp = parentOrigin?.includes('safe.global') ?? false
-
-    // Parse URL params that Safe App Store may inject
-    const params = new URLSearchParams(window.location.search)
-    const safeParam = params.get('safe')
-    const chainParam = params.get('chain') || params.get('chainId')
-
-    // Extract address from safe param (format: <chainPrefix>:<address> or just <address>)
-    let safeAddress: string | null = null
-    if (safeParam) {
-      const parts = safeParam.split(':')
-      safeAddress = parts.length > 1 ? parts[parts.length - 1] : safeParam
-      // Validate it looks like an Ethereum address
-      if (!/^0x[a-fA-F0-9]{40}$/.test(safeAddress)) {
-        safeAddress = null
-      }
-    }
-
-    const chainId = chainParam ? parseInt(chainParam, 10) : null
-
-    setContext({
-      isInsideIframe,
-      parentOrigin,
-      isSafeApp,
-      safeAddress,
-      chainId: chainId && !isNaN(chainId) ? chainId : null,
+    // Initialize Safe Apps SDK
+    const sdk = new SafeAppsSDK({
+      allowedDomains: [/safe\.global$/, /app\.safe\.global$/],
     })
+
+    // Try to get Safe info — times out after 2s if not in Safe context
+    const timeout = setTimeout(() => {
+      // If we haven't gotten Safe info in 2s, we're probably not in Safe
+      setContext(prev => prev.loading ? {
+        isInsideIframe: true,
+        isSafeApp: false,
+        safe: null,
+        safeAddress: null,
+        chainId: null,
+        sdk: null,
+        loading: false,
+      } : prev)
+    }, 2000)
+
+    sdk.safe.getInfo().then((safeInfo) => {
+      clearTimeout(timeout)
+      setContext({
+        isInsideIframe: true,
+        isSafeApp: true,
+        safe: safeInfo,
+        safeAddress: safeInfo.safeAddress,
+        chainId: safeInfo.chainId,
+        sdk,
+        loading: false,
+      })
+    }).catch(() => {
+      clearTimeout(timeout)
+      setContext({
+        isInsideIframe: true,
+        isSafeApp: false,
+        safe: null,
+        safeAddress: null,
+        chainId: null,
+        sdk: null,
+        loading: false,
+      })
+    })
+
+    return () => clearTimeout(timeout)
   }, [])
 
   return context
