@@ -14,13 +14,21 @@
 ## 📋 Task Board
 
 ### 🔴 In Progress
-| Task | Agent | Status | ETA |
-|------|-------|--------|-----|
-| Replace emojis → Lucide icons | emoji-audit-v2 | 🔄 Running | ~5 min |
-| UX audit report | ux-audit-v2 | 🔄 Running | ~5 min |
-| Deploy latest to Railway | railway-deploy | 🔄 Running | ~5 min |
+| Task | Status | ETA |
+|------|--------|-----|
+| Deploy #2 to Railway | 🔄 Building | ~5 min |
 
-### ✅ Done
+### ✅ Done (Overnight Sprint)
+| Task | Agent | Output | Tokens |
+|------|-------|--------|--------|
+| Compression + code-split | performance-fix | Commit `57b27d8` | 19K |
+| SEO + meta + PWA | seo-meta | Commit `e87e0ea` | 16K |
+| Security hardening | security-fix | Commit `8331a57` | 25K |
+| UX quick wins | ux-quickwins | Commit `73ec733` | 32K |
+| GitHub repo public | github-setup | github.com/supersandguard/sandguard | 16K |
+| Moltbook engagement | moltbook-engage | Builder log + 3 comments | 40K |
+
+### ✅ Done (Earlier)
 | Task | Agent | Output | Tokens |
 |------|-------|--------|--------|
 | Business strategy | business-strategy | `BUSINESS-STRATEGY.md` (33.6KB) | 55K |
@@ -28,6 +36,9 @@
 | ByBit content (blog + thread + moltbook) | bybit-content | `content/bybit-*.md` | 34K |
 | Free tier + Pro pricing | pricing-v2 | Commit `3cb95d3` | 37K |
 | Marketing plan | marketing-review | `MARKETING-PLAN.md` (21KB) | 70K |
+| Lucide icons | emoji-audit-v2 | Commit `559686c` | 44K |
+| UX audit | ux-audit-v2 | `UX-AUDIT.md` | 61K |
+| Railway deploy | railway-deploy | v0.3.0 live | 20K |
 
 ### ❌ Failed (Waste)
 | Task | Agent | Reason | Tokens Burned |
@@ -52,7 +63,8 @@
 ## 📊 Activity Feed
 
 ```
-23:38 — DEPLOY triggered (railway up) — all wave 1 commits included
+23:48 — Deploy #2 triggered — all 6 agents done, waiting for Railway build
+23:38 — Deploy #1 triggered but missed late commits
 23:37 — ux-quickwins COMPLETED (73ec733) — demo routing, badge, empty states, page titles
 23:36 — github-setup COMPLETED — repo PUBLIC at github.com/supersandguard/sandguard
 23:36 — security-fix COMPLETED (8331a57) — headers, sanitize, API 404, address validation
