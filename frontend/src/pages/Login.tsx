@@ -3,6 +3,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { DaimoPayButton } from '@daimo/pay'
 
+const getApiBase = () => {
+  const saved = localStorage.getItem('sand-config')
+  if (saved) {
+    try {
+      const config = JSON.parse(saved)
+      if (config.apiUrl) return config.apiUrl
+    } catch {}
+  }
+  return import.meta.env.VITE_API_URL || ''
+}
+
 const PAYMENT_ADDRESS = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
 const BASE_CHAIN_ID = 8453
@@ -24,7 +35,7 @@ export default function Login() {
       const payerAddress = payment?.source?.payerAddress || 'unknown'
       const paymentId = payment?.id || event?.paymentId || 'unknown'
 
-      const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
+      const API_BASE = getApiBase()
       const response = await fetch(`${API_BASE}/api/payments/activate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -53,7 +64,7 @@ export default function Login() {
     setVerifying(true)
     setError('')
     try {
-      const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
+      const API_BASE = getApiBase()
       const response = await fetch(`${API_BASE}/api/payments/recover`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -79,7 +90,7 @@ export default function Login() {
     setVerifying(true)
     setError('')
     try {
-      const API_BASE = JSON.parse(localStorage.getItem('sand-config') || '{}').apiUrl || ''
+      const API_BASE = getApiBase()
       const response = await fetch(`${API_BASE}/api/promo/redeem`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
