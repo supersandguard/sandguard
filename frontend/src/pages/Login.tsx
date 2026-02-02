@@ -1,8 +1,8 @@
-import { useState, useEffect, lazy, Suspense, useMemo } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { PrerequisiteCheclistCompact } from '../components/PrerequisiteChecklist'
-const DaimoPayButton = lazy(() => import('@daimo/pay').then(m => ({ default: m.DaimoPayButton })))
+const LazyDaimoCheckout = lazy(() => import('../components/DaimoCheckout'))
 import { Shield, Check, X, Ticket, Info, ExternalLink, AlertCircle } from 'lucide-react'
 
 const getApiBase = () => {
@@ -15,10 +15,6 @@ const getApiBase = () => {
   }
   return import.meta.env.VITE_API_URL || ''
 }
-
-const PAYMENT_ADDRESS = '0xCc75959A8Fa6ed76F64172925c0799ad94ab0B84'
-const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
-const BASE_CHAIN_ID = 8453
 
 export default function Login() {
   const navigate = useNavigate()
@@ -55,10 +51,10 @@ export default function Login() {
         login(data.apiKey, '')
         navigate('/app')
       } else {
-        setError(data.error || 'Payment activation failed')
+        setError(data.error || 'Payment activation failed. Your payment was received — please try recovering access with your wallet address.')
       }
     } catch {
-      setError('Connection failed. Check your API URL in Settings.')
+      setError('Connection failed. Please check your internet connection and try again.')
     } finally {
       setVerifying(false)
     }
@@ -67,6 +63,10 @@ export default function Login() {
   const handleRecover = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!recoverAddress.trim()) return
+    if (recoverAddress.trim().length > 2 && !/^0x[a-fA-F0-9]{40}$/.test(recoverAddress.trim())) {
+      setError('Please enter a valid Ethereum address (0x followed by 40 hex characters)')
+      return
+    }
     setVerifying(true)
     setError('')
     try {
@@ -81,10 +81,10 @@ export default function Login() {
         login(data.apiKey, '')
         navigate('/app')
       } else {
-        setError(data.error || 'No subscription found for this address')
+        setError(data.error || 'No subscription found for this address. Make sure this is the wallet you originally paid with.')
       }
     } catch {
-      setError('Connection failed. Check your API URL in Settings.')
+      setError('Connection failed. Please check your internet connection and try again.')
     } finally {
       setVerifying(false)
     }
@@ -93,6 +93,10 @@ export default function Login() {
   const handleFreeSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!freeAddress.trim()) return
+    if (!/^0x[a-fA-F0-9]{40}$/.test(freeAddress.trim())) {
+      setError('Enter a valid Ethereum address starting with 0x (42 characters total)')
+      return
+    }
     setVerifying(true)
     setError('')
     try {
@@ -107,10 +111,10 @@ export default function Login() {
         login(data.apiKey, '')
         navigate('/app')
       } else {
-        setError(data.error || 'Failed to create free account')
+        setError(data.error || 'Something went wrong creating your account. Please try again.')
       }
     } catch {
-      setError('Connection failed. Check your API URL in Settings.')
+      setError('Connection failed. Please check your internet connection and try again.')
     } finally {
       setVerifying(false)
     }
@@ -133,10 +137,10 @@ export default function Login() {
         login(data.apiKey, '')
         navigate('/app')
       } else {
-        setError(data.error || 'Invalid promo code')
+        setError(data.error || 'That code doesn\'t seem right. Double-check the spelling and try again.')
       }
     } catch {
-      setError('Connection failed. Check your API URL in Settings.')
+      setError('Connection failed. Please check your internet connection and try again.')
     } finally {
       setVerifying(false)
     }
@@ -162,8 +166,16 @@ export default function Login() {
 
           {/* Error banner */}
           {error && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-400">
-              {error}
+            <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-red-400 flex items-start gap-2.5">
+              <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
+              <div>
+                <p>{error}</p>
+                {error.includes('Connection failed') && (
+                  <p className="text-xs text-red-400/70 mt-1">
+                    Make sure you're connected to the internet. If the problem persists, try again in a minute.
+                  </p>
+                )}
+              </div>
             </div>
           )}
 
@@ -173,7 +185,7 @@ export default function Login() {
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Get Started</h1>
                 <p className="text-sm text-slate-400">
-                  Protect your Safe multisig
+                  Protect your Safe multisig — start for free in 30 seconds
                 </p>
               </div>
 
@@ -201,15 +213,7 @@ export default function Login() {
                     </div>
                   </div>
                   <Suspense fallback={<div className="text-center py-3 text-sm text-slate-500">Loading payment...</div>}>
-                    <DaimoPayButton
-                      appId="pay-demo"
-                      toAddress={PAYMENT_ADDRESS as `0x${string}`}
-                      toChain={BASE_CHAIN_ID}
-                      toToken={USDC_BASE as `0x${string}`}
-                      toUnits="20.00"
-                      intent="Subscribe to SandGuard Pro"
-                      onPaymentCompleted={handlePaymentCompleted}
-                    />
+                    <LazyDaimoCheckout onPaymentCompleted={handlePaymentCompleted} />
                   </Suspense>
                   <p className="text-xs text-center text-slate-600">
                     Pay with 1200+ tokens on 20+ chains
@@ -371,7 +375,7 @@ export default function Login() {
             <>
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Recover Access</h1>
-                <p className="text-sm text-slate-400">Enter the wallet address you paid with</p>
+                <p className="text-sm text-slate-400">Enter the wallet address you originally paid with</p>
               </div>
               <form onSubmit={handleRecover} className="space-y-4">
                 <div>
@@ -380,15 +384,30 @@ export default function Login() {
                     type="text" value={recoverAddress}
                     onChange={(e) => setRecoverAddress(e.target.value)}
                     placeholder="0x..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none focus:border-cyan-500 placeholder:text-slate-600 text-center"
+                    className={`w-full bg-slate-900 border rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none placeholder:text-slate-600 text-center transition-colors ${
+                      recoverAddress.trim() && !/^0x[a-fA-F0-9]{40}$/.test(recoverAddress.trim())
+                        ? 'border-red-500/50 focus:border-red-500'
+                        : recoverAddress.trim() && /^0x[a-fA-F0-9]{40}$/.test(recoverAddress.trim())
+                        ? 'border-emerald-500/50 focus:border-emerald-500'
+                        : 'border-slate-800 focus:border-cyan-500'
+                    }`}
                   />
+                  {recoverAddress.trim() && !/^0x[a-fA-F0-9]{40}$/.test(recoverAddress.trim()) && (
+                    <p className="flex items-center gap-1 text-xs text-red-400 mt-1.5">
+                      <AlertCircle size={12} />
+                      Enter a valid Ethereum address (0x + 40 hex characters)
+                    </p>
+                  )}
                 </div>
-                <button type="submit" disabled={verifying || !recoverAddress.trim()}
+                <button type="submit" disabled={verifying || !recoverAddress.trim() || (recoverAddress.trim().length > 2 && !/^0x[a-fA-F0-9]{40}$/.test(recoverAddress.trim()))}
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {verifying ? 'Checking...' : 'Recover Subscription'}
                 </button>
               </form>
+              <p className="text-xs text-slate-600 text-center">
+                Can't remember which address you used? Check your wallet's transaction history for a $20 USDC payment.
+              </p>
               <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
             </>
           )}

@@ -52,7 +52,7 @@ export default function Landing() {
             </div>
             <span className="text-lg font-semibold tracking-tight">SandGuard</span>
           </div>
-          <div className="flex items-center gap-4">
+          <nav aria-label="Main navigation" className="flex items-center gap-4">
             <Link
               to="/login"
               className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
@@ -65,15 +65,16 @@ export default function Landing() {
             >
               Get Started
             </Link>
-          </div>
+          </nav>
         </div>
       </header>
 
+      <main>
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-8">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          Open Beta
+          Free tier available — no credit card required
         </div>
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
           Transaction Firewall
@@ -100,6 +101,21 @@ export default function Landing() {
             Try Demo →
           </button>
         </div>
+        {/* Trust signals */}
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-10 text-xs text-slate-500">
+          <span className="flex items-center gap-1.5">
+            <CheckCircle size={14} className="text-emerald-500" />
+            Built on Safe — $100B+ secured
+          </span>
+          <span className="flex items-center gap-1.5">
+            <CheckCircle size={14} className="text-emerald-500" />
+            No wallet connection required
+          </span>
+          <span className="flex items-center gap-1.5">
+            <CheckCircle size={14} className="text-emerald-500" />
+            Read-only — never touches your keys
+          </span>
+        </div>
       </section>
 
       {/* Features */}
@@ -118,6 +134,47 @@ export default function Landing() {
               <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* What is Safe? — explainer for newcomers */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <div className="max-w-3xl mx-auto bg-gradient-to-b from-slate-900/80 to-slate-900/30 rounded-2xl border border-slate-800/60 p-8 md:p-10">
+          <div className="flex items-center gap-2 mb-4">
+            <Wallet size={20} className="text-emerald-400" />
+            <h2 className="text-lg font-bold">New to Safe? Here's the quick version</h2>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed mb-5">
+            A <strong className="text-slate-200">Safe</strong> (formerly Gnosis Safe) is the most widely-used smart contract wallet in crypto.
+            It's like a shared bank account that requires <strong className="text-slate-200">multiple approvals</strong> (e.g., 2 of 3 team members) before any transaction goes through.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-4 mb-5">
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/40">
+              <p className="text-sm font-medium text-slate-200 mb-1">👥 Multi-sig</p>
+              <p className="text-xs text-slate-400">Multiple people must approve each transaction</p>
+            </div>
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/40">
+              <p className="text-sm font-medium text-slate-200 mb-1">🔐 Secure</p>
+              <p className="text-xs text-slate-400">No single point of failure — lose one key, funds are still safe</p>
+            </div>
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/40">
+              <p className="text-sm font-medium text-slate-200 mb-1">🏗️ Trusted</p>
+              <p className="text-xs text-slate-400">Used by Ethereum Foundation, DAOs, and major protocols</p>
+            </div>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed mb-4">
+            <strong className="text-slate-200">The problem:</strong> when a transaction hits your queue, you see raw hex data and contract addresses.
+            SandGuard translates that into plain English so you know exactly what you're signing.
+          </p>
+          <a
+            href="https://app.safe.global/new-safe/create"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+          >
+            Create your first Safe — it's free
+            <ExternalLink size={14} />
+          </a>
         </div>
       </section>
 
@@ -368,6 +425,8 @@ export default function Landing() {
           Get Started
         </Link>
       </section>
+
+      </main>
 
       {/* Footer */}
       <footer className="border-t border-slate-800/60 py-8">
