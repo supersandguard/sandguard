@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3'
 import path from 'path'
 import fs from 'fs'
+import crypto from 'crypto'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -103,6 +104,12 @@ const stmts = {
   insertRedemption: db.prepare('INSERT INTO promo_redemptions (code, address, redeemed_at) VALUES (?, ?, ?)'),
   getRedemption: db.prepare('SELECT * FROM promo_redemptions WHERE code = ? AND address = ?'),
   getAllPromos: db.prepare('SELECT * FROM promo_codes ORDER BY created_at DESC'),
+}
+
+// Plan limits
+export const PLAN_LIMITS: Record<string, { safes: number; dailyCalls: number; features: string[] }> = {
+  scout: { safes: 1, dailyCalls: 10, features: ['decode'] },
+  pro: { safes: 5, dailyCalls: 1000, features: ['decode', 'simulate', 'risk', 'explain', 'alerts'] }
 }
 
 // Helper functions
@@ -240,6 +247,31 @@ export function redeemPromoCode(code: string, address: string): { apiKey: string
 
 export function getAllPromoCodes(): PromoCode[] {
   return stmts.getAllPromos.all() as PromoCode[]
+}
+
+// Free tier signup
+export function createFreeSubscription(address: string): { apiKey: string; plan: string } {
+  const addr = address.toLowerCase()
+  // Check if already has active subscription
+  const existing = stmts.getByAddress.get(addr) as Subscription | undefined
+  if (existing && (existing.expires_at > Date.now() || existing.plan === 'scout')) {
+    return { apiKey: existing.api_key, plan: existing.plan }
+  }
+
+  const apiKey = 'sg_' + crypto.randomUUID().replace(/-/g, '')
+  stmts.upsertSub.run({
+    address: addr,
+    email: null,
+    apiKey,
+    plan: 'scout',
+    paidTxHash: 'free:scout',
+    stripeCustomerId: null,
+    stripeSubscriptionId: null,
+    paidAt: Date.now(),
+    expiresAt: 9999999999999,
+    updatedAt: Date.now(),
+  })
+  return { apiKey, plan: 'scout' }
 }
 
 // Seed F&F promo codes

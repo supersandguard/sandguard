@@ -81,7 +81,7 @@ export default function Landing() {
             to="/login"
             className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-base hover:opacity-90 transition-opacity"
           >
-            Get Started — $20/mo in any crypto
+            Start Free — No Payment Required
           </Link>
           <Link
             to="/app"
@@ -133,40 +133,81 @@ export default function Landing() {
         <h2 className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-12">
           Simple pricing
         </h2>
-        <div className="max-w-sm mx-auto bg-slate-900/50 rounded-2xl p-8 border border-slate-800/60 text-center">
-          <p className="text-sm text-slate-400 mb-2">Pro</p>
-          <div className="flex items-baseline justify-center gap-1 mb-2">
-            <span className="text-5xl font-bold">$20</span>
-            <span className="text-slate-500">/month</span>
+        <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
+          {/* Scout - FREE */}
+          <div className="bg-slate-900/50 rounded-2xl p-8 border border-slate-800/60 flex flex-col">
+            <p className="text-sm text-slate-400 mb-2">Scout</p>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span className="text-5xl font-bold">Free</span>
+            </div>
+            <p className="text-sm text-slate-400 mb-6">No credit card required</p>
+            <ul className="text-sm text-slate-400 space-y-3 mb-8 flex-1">
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> 1 Safe monitored
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> Transaction decoding
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> 10 API calls/day
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-slate-600">✗</span> <span className="text-slate-600">Simulation</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-slate-600">✗</span> <span className="text-slate-600">Risk scoring</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-slate-600">✗</span> <span className="text-slate-600">Alerts</span>
+              </li>
+            </ul>
+            <Link
+              to="/login"
+              className="block w-full py-3 rounded-xl bg-slate-800 text-slate-300 font-semibold text-center border border-slate-700 hover:border-emerald-500/50 transition-colors"
+            >
+              Start Free →
+            </Link>
           </div>
-          <p className="text-sm text-slate-400 mb-6">Pay with any crypto</p>
-          <ul className="text-sm text-slate-400 space-y-3 mb-8 text-left">
-            <li className="flex items-center gap-2">
-              <span className="text-emerald-400">✓</span> Unlimited transactions
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-emerald-400">✓</span> Tenderly simulation
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-emerald-400">✓</span> AI-powered explanations
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-emerald-400">✓</span> Risk scoring engine
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-emerald-400">✓</span> Multi-chain support
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-emerald-400">✓</span> Push notifications via Clawdbot
-            </li>
-          </ul>
-          <Link
-            to="/login"
-            className="block w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold hover:opacity-90 transition-opacity"
-          >
-            Connect Your Safe
-          </Link>
-          <p className="text-xs text-slate-600 mt-3">Pay with any crypto • Cancel anytime</p>
+
+          {/* Pro - $20/mo */}
+          <div className="bg-slate-900/50 rounded-2xl p-8 border-2 border-emerald-500/40 flex flex-col relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full uppercase tracking-wider">
+              Most Popular
+            </div>
+            <p className="text-sm text-slate-400 mb-2">Pro</p>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span className="text-5xl font-bold">$20</span>
+              <span className="text-slate-500">/month</span>
+            </div>
+            <p className="text-sm text-slate-400 mb-6">Pay with any crypto</p>
+            <ul className="text-sm text-slate-400 space-y-3 mb-8 flex-1">
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> 5 Safes monitored
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> Transaction decoding
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> Simulation
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> AI risk scoring
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> 1,000 API calls/day
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-emerald-400">✓</span> Push alerts via Clawdbot
+              </li>
+            </ul>
+            <Link
+              to="/login"
+              className="block w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-center hover:opacity-90 transition-opacity"
+            >
+              Go Pro →
+            </Link>
+            <p className="text-xs text-slate-600 mt-3 text-center">Pay with any crypto • Cancel anytime</p>
+          </div>
         </div>
       </section>
 

@@ -21,9 +21,10 @@ const BASE_CHAIN_ID = 8453
 export default function Login() {
   const navigate = useNavigate()
   const { login, setDemoMode } = useAuth()
-  const [step, setStep] = useState<'choose' | 'promo' | 'recover'>('choose')
+  const [step, setStep] = useState<'choose' | 'free' | 'promo' | 'recover'>('choose')
   const [promoCode, setPromoCode] = useState('')
   const [recoverAddress, setRecoverAddress] = useState('')
+  const [freeAddress, setFreeAddress] = useState('')
   const [verifying, setVerifying] = useState(false)
   const [error, setError] = useState('')
 
@@ -76,6 +77,32 @@ export default function Login() {
         navigate('/app')
       } else {
         setError(data.error || 'No subscription found for this address')
+      }
+    } catch {
+      setError('Connection failed. Check your API URL in Settings.')
+    } finally {
+      setVerifying(false)
+    }
+  }
+
+  const handleFreeSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!freeAddress.trim()) return
+    setVerifying(true)
+    setError('')
+    try {
+      const API_BASE = getApiBase()
+      const response = await fetch(`${API_BASE}/api/payments/free`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: freeAddress.trim() })
+      })
+      const data = await response.json()
+      if (response.ok && data.apiKey) {
+        login(data.apiKey, '')
+        navigate('/app')
+      } else {
+        setError(data.error || 'Failed to create free account')
       }
     } catch {
       setError('Connection failed. Check your API URL in Settings.')
@@ -141,26 +168,47 @@ export default function Login() {
               <div className="text-center">
                 <h1 className="text-2xl font-bold mb-2">Get Started</h1>
                 <p className="text-sm text-slate-400">
-                  Protect your Safe multisig — $20/month
+                  Protect your Safe multisig
                 </p>
               </div>
 
-              {/* Daimo Pay Button */}
-              <div className="w-full">
-                <DaimoPayButton
-                  appId="pay-demo"
-                  toAddress={PAYMENT_ADDRESS as `0x${string}`}
-                  toChain={BASE_CHAIN_ID}
-                  toToken={USDC_BASE as `0x${string}`}
-                  toUnits="20.00"
-                  intent="Subscribe to SandGuard"
-                  onPaymentCompleted={handlePaymentCompleted}
-                />
-              </div>
-
-              <p className="text-xs text-center text-slate-600">
-                Pay with 1200+ tokens on 20+ chains
+              {/* Start Free - Prominent */}
+              <button
+                onClick={() => { setStep('free'); setError('') }}
+                className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold text-base hover:opacity-90 transition-opacity"
+              >
+                🚀 Start Free — No Payment Required
+              </button>
+              <p className="text-xs text-center text-slate-500 -mt-3">
+                1 Safe • Transaction decoding • 10 API calls/day
               </p>
+
+              {/* Go Pro with Daimo */}
+              <div className="relative">
+                <div className="absolute -top-2 right-3 px-2 py-0.5 bg-cyan-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider z-10">
+                  Most Popular
+                </div>
+                <div className="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-sm">Go Pro — $20/month</p>
+                      <p className="text-xs text-slate-500">5 Safes • All features • 1000 calls/day</p>
+                    </div>
+                  </div>
+                  <DaimoPayButton
+                    appId="pay-demo"
+                    toAddress={PAYMENT_ADDRESS as `0x${string}`}
+                    toChain={BASE_CHAIN_ID}
+                    toToken={USDC_BASE as `0x${string}`}
+                    toUnits="20.00"
+                    intent="Subscribe to SandGuard Pro"
+                    onPaymentCompleted={handlePaymentCompleted}
+                  />
+                  <p className="text-xs text-center text-slate-600">
+                    Pay with 1200+ tokens on 20+ chains
+                  </p>
+                </div>
+              </div>
 
               {/* Promo Code */}
               <button
@@ -176,31 +224,56 @@ export default function Login() {
                 </div>
                 <span className="text-xs text-amber-400 font-medium">FREE</span>
               </button>
+            </>
+          )}
 
-              {/* What you get */}
+          {/* Step: Free Signup */}
+          {step === 'free' && !verifying && (
+            <>
+              <div className="text-center">
+                <h1 className="text-2xl font-bold mb-2">Start Free</h1>
+                <p className="text-sm text-slate-400">Enter your Safe owner wallet address</p>
+              </div>
+              <form onSubmit={handleFreeSignup} className="space-y-4">
+                <div>
+                  <label className="text-xs text-slate-500 block mb-1.5">Wallet Address</label>
+                  <input
+                    type="text" value={freeAddress}
+                    onChange={(e) => setFreeAddress(e.target.value)}
+                    placeholder="0x..."
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-300 focus:outline-none focus:border-emerald-500 placeholder:text-slate-600 text-center"
+                  />
+                </div>
+                <button type="submit" disabled={verifying || !freeAddress.trim()}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {verifying ? 'Creating...' : 'Create Free Account'}
+                </button>
+              </form>
               <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800/60">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">What's included</p>
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Scout Plan (Free)</p>
                 <ul className="text-sm text-slate-400 space-y-2">
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> Unlimited transactions
+                    <span className="text-emerald-400 text-xs">✓</span> 1 Safe monitored
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> All chains (Ethereum, Base, Optimism, Arbitrum)
+                    <span className="text-emerald-400 text-xs">✓</span> Transaction decoding
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> Transaction simulation & decoding
+                    <span className="text-emerald-400 text-xs">✓</span> 10 API calls/day
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> AI risk scoring
+                    <span className="text-slate-600 text-xs">✗</span> <span className="text-slate-600">Simulation</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> API access + Web dashboard
+                    <span className="text-slate-600 text-xs">✗</span> <span className="text-slate-600">Risk scoring</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-emerald-400 text-xs">✓</span> Clawdbot integration
+                    <span className="text-slate-600 text-xs">✗</span> <span className="text-slate-600">Alerts</span>
                   </li>
                 </ul>
               </div>
+              <button onClick={() => setStep('choose')} className="w-full text-center text-xs text-slate-600 hover:text-slate-400">← Back</button>
             </>
           )}
 

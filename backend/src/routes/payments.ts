@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
-import { activateSubscription, getSubscriptionByAddress, getSubscriptionByApiKey } from '../services/db'
+import { activateSubscription, getSubscriptionByAddress, getSubscriptionByApiKey, createFreeSubscription, PLAN_LIMITS } from '../services/db'
+import db from '../services/db'
 
 const router = Router()
 
@@ -138,6 +139,22 @@ router.post('/recover', (req: Request, res: Response) => {
   })
 })
 
+// In-memory daily usage tracker
+const dailyUsage = new Map<string, { count: number; date: string }>()
+
+function trackUsage(apiKey: string, plan: string): boolean {
+  const today = new Date().toISOString().split('T')[0]
+  const usage = dailyUsage.get(apiKey)
+  if (!usage || usage.date !== today) {
+    dailyUsage.set(apiKey, { count: 1, date: today })
+    return true
+  }
+  const limit = PLAN_LIMITS[plan]?.dailyCalls || 10
+  if (usage.count >= limit) return false
+  usage.count++
+  return true
+}
+
 // Middleware: validate API key
 export function requireApiKey(req: Request, res: Response, next: Function) {
   // Allow demo mode without API key for /api/safe and /api/health
@@ -155,6 +172,35 @@ export function requireApiKey(req: Request, res: Response, next: Function) {
   
   if (sub.expires_at < Date.now()) {
     return res.status(403).json({ error: 'Subscription expired. Please renew.' })
+  }
+
+  // Track daily usage per plan
+  const plan = sub.plan || 'pro'
+  if (!trackUsage(apiKey, plan)) {
+    const limits = PLAN_LIMITS[plan]
+    return res.status(429).json({
+      error: `Daily API limit reached (${limits?.dailyCalls || 10} calls/day on ${plan} plan). Upgrade to Pro for 1000 calls/day.`,
+      plan,
+      limit: limits?.dailyCalls || 10,
+    })
+  }
+
+  // Check feature access based on plan
+  const endpoint = req.path.split('/')[1] || ''
+  const planFeatures = PLAN_LIMITS[plan]?.features || ['decode']
+  const featureMap: Record<string, string> = {
+    simulate: 'simulate',
+    risk: 'risk',
+    explain: 'explain',
+    poll: 'alerts',
+  }
+  const requiredFeature = featureMap[endpoint]
+  if (requiredFeature && !planFeatures.includes(requiredFeature)) {
+    return res.status(403).json({
+      error: `${endpoint} requires Pro plan. Upgrade at supersandguard.com`,
+      plan,
+      requiredFeature,
+    })
   }
   
   ;(req as any).subscription = sub
@@ -205,6 +251,24 @@ router.post('/activate', async (req: Request, res: Response) => {
     console.error('Payment activation error:', err)
     return res.status(500).json({ error: 'Failed to activate payment' })
   }
+})
+
+// POST /api/payments/free - Free tier signup
+router.post('/free', async (req: Request, res: Response) => {
+  const { address } = req.body
+  if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
+    return res.status(400).json({ error: 'Valid Ethereum address required' })
+  }
+  const result = createFreeSubscription(address.toLowerCase())
+  res.json({ success: true, ...result })
+})
+
+// GET /api/payments/plan/:apiKey - Check plan limits
+router.get('/plan/:apiKey', (req: Request, res: Response) => {
+  const sub = getSubscriptionByApiKey(req.params.apiKey)
+  if (!sub) return res.status(404).json({ error: 'Not found' })
+  const plan = sub.plan || 'pro'
+  res.json({ plan, limits: PLAN_LIMITS[plan] || PLAN_LIMITS.pro })
 })
 
 export default router
