@@ -371,22 +371,35 @@ export default function TxDetail() {
         </div>
       </details>
 
-      {/* Action Buttons */}
-      <div className="flex gap-3 pt-2">
-        <button className="flex-1 py-3.5 rounded-xl bg-red-500/20 text-red-400 font-semibold text-sm border border-red-500/30 hover:bg-red-500/30 transition-colors active:scale-95">
-          <span className="inline-flex items-center gap-1"><X className="w-4 h-4" /> Reject</span>
-        </button>
-        <button className={`flex-1 py-3.5 rounded-xl font-semibold text-sm border transition-colors active:scale-95 ${
-          isHighRisk
-            ? 'bg-amber-500/20 text-amber-400 border-amber-500/30 hover:bg-amber-500/30'
-            : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/30'
-        }`}>
-          <span className="inline-flex items-center gap-1">
-            <Check className="w-4 h-4" />
-            {isHighRisk ? 'Sign Anyway' : 'Sign'}
-          </span>
-        </button>
-      </div>
+      {/* Action Buttons — Open in Safe{Wallet} */}
+      {(() => {
+        const savedConfig = localStorage.getItem('sand-config')
+        const safeAddr = savedConfig ? JSON.parse(savedConfig).address : ''
+        const chainPrefix = chainId === 1 ? 'eth' : chainId === 8453 ? 'base' : chainId === 10 ? 'oeth' : chainId === 42161 ? 'arb1' : 'eth'
+        const safeWalletUrl = safeAddr
+          ? `https://app.safe.global/transactions/tx?safe=${chainPrefix}:${safeAddr}&id=multisig_${safeAddr}_${tx.id}`
+          : 'https://app.safe.global'
+        return (
+          <div className="space-y-3 pt-2">
+            <a
+              href={safeWalletUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-semibold text-sm border transition-colors active:scale-95 ${
+                isHighRisk
+                  ? 'bg-amber-500/20 text-amber-400 border-amber-500/30 hover:bg-amber-500/30'
+                  : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/30'
+              }`}
+            >
+              <ExternalLink className="w-4 h-4" />
+              Open in Safe Wallet to Sign or Reject
+            </a>
+            <p className="text-xs text-slate-500 text-center">
+              SandGuard analyzes transactions. Signing and rejection happen in Safe&#123;Wallet&#125;.
+            </p>
+          </div>
+        )
+      })()}
     </div>
   )
 }
