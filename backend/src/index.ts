@@ -24,6 +24,19 @@ const app = express();
 app.disable('x-powered-by');
 app.use(compression());
 
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+  next();
+});
+
 // Rate limiting (apply only to API routes)
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
@@ -63,7 +76,12 @@ app.use('/api/webhooks', daimoWebhookRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'SandGuard API', version: '0.3.0' });
+  res.json({ status: 'ok', service: 'SandGuard API' });
+});
+
+// API 404 handler
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'Endpoint not found' });
 });
 
 // --- Serve Frontend Static Files ---
